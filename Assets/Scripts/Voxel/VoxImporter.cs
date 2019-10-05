@@ -20,6 +20,7 @@ public class VoxImporter : ScriptedImporter
 		
 		// Main import object
 		VoxelObject importObject = ScriptableObject.CreateInstance<VoxelObject>();
+		importObject.m_Scale = m_Scale;
 		importObject.name = Path.GetFileNameWithoutExtension(ctx.assetPath);
 
 		ctx.AddObjectToAsset(importObject.name, importObject);

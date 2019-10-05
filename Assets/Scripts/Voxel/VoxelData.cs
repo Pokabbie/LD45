@@ -7,29 +7,8 @@ using UnityEngine;
 [Serializable]
 public class VoxelData : ScriptableObject
 {
-	[Serializable]
-	public struct Voxel
-	{
-		public uint m_ColourIndex;
-
-		public bool IsEmpty
-		{
-			get { return m_ColourIndex == 0; }
-		}
-		
-		public Voxel(uint colourIndex)
-		{
-			m_ColourIndex = colourIndex;
-		}
-
-		public static Voxel Empty
-		{
-			get { return new Voxel(); }
-		}
-	}
-
 	[SerializeField]
-	public Voxel[,,] m_RawData;
+	public Voxel[] m_RawData;
 
 	[SerializeField]
 	private int m_Width;
@@ -39,7 +18,10 @@ public class VoxelData : ScriptableObject
 
 	[SerializeField]
 	private int m_Depth;
-	
+
+	[SerializeField]
+	private Vector3 m_Centre;
+
 	// Format refer to
 	// https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
 	public static IEnumerable<VoxelData> ParseFrom(string path, out Color32[] palette)
@@ -56,14 +38,14 @@ public class VoxelData : ScriptableObject
 				data.m_Width = model.m_SizeX;
 				data.m_Height = model.m_SizeY;
 				data.m_Depth = model.m_SizeZ;
-				data.m_RawData = new Voxel[model.m_SizeX, model.m_SizeY, model.m_SizeZ];
+				data.m_RawData = new Voxel[model.m_SizeX * model.m_SizeY * model.m_SizeZ];
 
 				foreach (var voxel in model.m_Voxels)
 				{
 					if (voxel.colourIndex == 0)
 						Debug.LogWarning("Colour Index 0 found!");
 
-					data.m_RawData[voxel.x, voxel.y, voxel.z] = new Voxel(voxel.colourIndex);
+					data.m_RawData[data.GetRawIndex(voxel.x, voxel.y, voxel.z)] = new Voxel(voxel.colourIndex);
 				}
 
 				outputData.Add(data);
@@ -75,6 +57,11 @@ public class VoxelData : ScriptableObject
 		}
 		
 		return outputData;
+	}
+
+	private int GetRawIndex(int x, int y, int z)
+	{
+		return z * m_Height * m_Width + y * m_Width + x;
 	}
 
 	public int Width
@@ -91,6 +78,11 @@ public class VoxelData : ScriptableObject
 	{
 		get { return m_Depth; }
 	}
+
+	public Vector3 Centre
+	{
+		get { return m_Centre; }
+	}
 	
 	public Voxel GetVoxel(int x, int y, int z)
 	{
@@ -102,13 +94,19 @@ public class VoxelData : ScriptableObject
 			return Voxel.Empty;
 		}
 
-		return m_RawData[x, y, z];
+		return m_RawData[GetRawIndex(x, y, z)];
 	}
 
 	internal Mesh GenerateMesh(Vector3 pivotOffset, float scale)
 	{
-		VoxelMeshGenerator generator = new VoxelMeshGenerator(this, pivotOffset, scale);
+		m_Centre = pivotOffset + new Vector3(Width, Height, Depth) * 0.5f;
+		VoxelMeshGenerator generator = new VoxelMeshGenerator(this, scale);
 		return generator.GenerateMesh();
+	}
+
+	public Vector3 GetVoxelPosition(int x, int y, int z, float scale)
+	{
+		return (new Vector3(x,y,z) - m_Centre) * scale;
 	}
 }
 
@@ -123,11 +121,11 @@ internal class VoxelMeshGenerator
 	private List<Vector2> m_UVs = new List<Vector2>();
 	private List<int> m_Indices = new List<int>();
 
-	public VoxelMeshGenerator(VoxelData data, Vector3 pivotOffset, float scale)
+	public VoxelMeshGenerator(VoxelData data, float scale)
 	{
 		m_Data = data;
 		m_Scale = scale;
-		m_Centre = pivotOffset + new Vector3(data.Width, data.Height, data.Depth) * 0.5f;
+		m_Centre = data.Centre;
 	}
 
 	public Mesh GenerateMesh()

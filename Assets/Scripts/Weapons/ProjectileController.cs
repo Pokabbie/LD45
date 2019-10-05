@@ -16,12 +16,14 @@ public class ProjectileController : MonoBehaviour
 	private const float c_StepSize = 0.5f;
 	private const float c_CheckSize = 0.05f;
 
-	private int m_HitCount = 0;
-	private float m_LifeTime = 0;
+	private int m_HitCount;
+	private float m_LifeTime;
 
-	void Start()
+	void Awake()
     {
 		m_Body = GetComponent<Rigidbody>();
+		m_HitCount = 0;
+		m_LifeTime = 0.0f;
 	}
 	
     void Update()
