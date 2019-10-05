@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1088205710}
   - component: {fileID: 1088205711}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,10 +56,10 @@ GameObject:
   - component: {fileID: 3884041680769553338}
   - component: {fileID: 921376332}
   - component: {fileID: 921376333}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wep_Base
   m_TagString: Weapon
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -71,7 +71,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1068308459537854102}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.8150716, y: 4.2458687, z: -2.7529063}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1088205710}
@@ -90,6 +90,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eaf2d283bc6fb94a9763cbffe813891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Settings: {fileID: 11400000, guid: a4f5241be76c9aa4db5eecfadf1fea5b, type: 2}
+  m_ProjectileType: {fileID: 5713499817974765604, guid: f6f01fb32e3bee1438a77eb57b4611f0,
+    type: 3}
+  m_ProjectileSockets: []
 --- !u!136 &921376332
 CapsuleCollider:
   m_ObjectHideFlags: 0

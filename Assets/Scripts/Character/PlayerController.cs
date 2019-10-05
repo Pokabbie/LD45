@@ -24,6 +24,16 @@ public class PlayerController : MonoBehaviour
 	
     void Update()
 	{
+		// DEBUG 
+		//m_CursorPosition = transform.position + (Quaternion.AngleAxis(Time.time * 15.0f, Vector3.up) * Vector3.right) * 3.0f;
+
+		UpdateAimPosition();
+		m_CharController.AimPosition = m_CursorPosition;
+
+		// DEBUG
+		testCursor.transform.position = m_CursorPosition;
+
+		// Movement
 		if (Input.GetKey(KeyCode.A))
 		{
 			m_CharController.Movement.Move(Vector2.left);
@@ -41,15 +51,11 @@ public class PlayerController : MonoBehaviour
 			m_CharController.Movement.Move(Vector2.down);
 		}
 
-		UpdateAimPosition();
-
-		// DEBUG 
-		//m_CursorPosition = transform.position + (Quaternion.AngleAxis(Time.time * 15.0f, Vector3.up) * Vector3.right) * 3.0f;
-
-		m_CharController.AimPosition = m_CursorPosition;
-
-		// DEBUG
-		testCursor.transform.position = m_CursorPosition;
+		// Shooting
+		if (Input.GetMouseButton(0))
+		{
+			m_CharController.FireAnyWeapon(Input.GetMouseButtonDown(0));
+		}
 	}
 
 	void UpdateAimPosition()

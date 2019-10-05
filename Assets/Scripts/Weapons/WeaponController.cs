@@ -11,12 +11,37 @@ public class WeaponController : MonoBehaviour
 	private SphereCollider m_Trigger;
 	private CharacterController m_Owner;
 
+	private float m_CurrentCooldown;
+
+	[SerializeField]
+	private WeaponSettings m_Settings;
+	[SerializeField]
+	private GameObject m_ProjectileType;
+	[SerializeField]
+	private Transform[] m_ProjectileSockets;
+
 	void Start()
     {
 		m_Body = GetComponent<Rigidbody>();
 		m_Collider = GetComponent<CapsuleCollider>();
 		m_Trigger = GetComponent<SphereCollider>();
 		SetPhysicsMode(true);
+
+		if (m_ProjectileSockets.Length == 0)
+			Debug.Log("No projectile sockets for " + gameObject.name);
+	}
+
+	void Update()
+	{
+		if (m_CurrentCooldown > 0.0f)
+		{
+			m_CurrentCooldown = Mathf.Max(0.0f, m_CurrentCooldown - Time.deltaTime);
+		}
+	}
+
+	public bool CanFire
+	{
+		get { return m_CurrentCooldown == 0.0f; }
 	}
 
 	private void SetPhysicsMode(bool enabled)
@@ -56,5 +81,25 @@ public class WeaponController : MonoBehaviour
 		{
 			OnPickup(controller);
 		}
+	}
+
+	public bool TryFire(bool buttonJustPressed)
+	{
+		if (m_Settings.m_Automatic || buttonJustPressed)
+		{
+			if (CanFire)
+			{
+				for (int i = 0; i < m_ProjectileSockets.Length; ++i)
+				{
+					Transform socket = m_ProjectileSockets[i];
+					ProjectileController.LaunchProjectile(m_ProjectileType, m_Owner.gameObject, socket.position, new Vector3(m_Owner.AimDirection.x, 0, m_Owner.AimDirection.y).normalized);
+				}
+
+				m_CurrentCooldown = m_Settings.m_Cooldown;
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

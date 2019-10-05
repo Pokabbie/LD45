@@ -135,4 +135,16 @@ public class CharacterController : MonoBehaviour
 		weapon.transform.localPosition = Vector3.zero + new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f) * 2.0f * m_BackpackJitter;
 		weapon.transform.localRotation = Quaternion.identity * Quaternion.AngleAxis(Random.value * 360.0f, Vector3.forward);
 	}
+
+	public bool FireAnyWeapon(bool buttonJustPressed)
+	{
+		bool fired = false;
+		if (m_LeftHandWeapon != null)
+			fired |= m_LeftHandWeapon.TryFire(buttonJustPressed);
+
+		if (m_RightHandWeapon != null)
+			fired |= m_RightHandWeapon.TryFire(buttonJustPressed);
+
+		return fired;
+	}
 }

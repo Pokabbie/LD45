@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 273699558}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BRHLock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 431089454}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TRHLock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 460062152}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TLHLock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 549771966}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 573523970}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 717723898}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BLHLock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 669584995}
   - component: {fileID: 669584996}
   - component: {fileID: 669584997}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Char_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +221,6 @@ Transform:
   - {fileID: 717723898}
   - {fileID: 431089454}
   - {fileID: 273699558}
-  - {fileID: 6875311815382256608}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -316,7 +315,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8066658110304379546}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RHSocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +345,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8284421264239185549}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LHSocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -376,7 +375,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6875311815382256608}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BackPack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -390,12 +389,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6533840455413265135}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.25699997}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: -0.25699994, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 5561051395004246617}
-  m_RootOrder: 7
+  m_Father: {fileID: 7507882380823881965}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7228181226585161141
 GameObject:
@@ -407,7 +406,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7507882380823881965}
   - component: {fileID: 299725359820539382}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,7 +423,8 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 6875311815382256608}
   m_Father: {fileID: 5561051395004246617}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
