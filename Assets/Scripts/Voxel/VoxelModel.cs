@@ -10,6 +10,18 @@ public class VoxelModel : MonoBehaviour
 	
 	void Awake()
     {
+		UpdateData();
+	}
+
+#if UNITY_EDITOR
+	void Update()
+	{
+		UpdateData();
+	}
+#endif
+
+	private void UpdateData()
+	{
 		if (m_VoxelData != m_PreviousVoxelData)
 		{
 			m_PreviousVoxelData = m_VoxelData;
@@ -18,7 +30,7 @@ public class VoxelModel : MonoBehaviour
 			{
 				DestroyImmediate(transform.GetChild(i).gameObject);
 			}
-			
+
 			if (m_VoxelData != null && m_VoxelData.m_ModelObject != null)
 			{
 				GameObject gameObj = Instantiate(m_VoxelData.m_ModelObject, transform);

@@ -79,13 +79,6 @@ public class VoxImporter : ScriptedImporter
 	}
 }
 
-[Serializable]
-public class VoxelObject : ScriptableObject
-{
-	public GameObject m_ModelObject;
-	public VoxelData[] m_VoxelData;
-}
-
 internal class VoxReader : IDisposable
 {
 	public struct VoxPoint

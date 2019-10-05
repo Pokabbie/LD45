@@ -8,6 +8,16 @@ public class CharacterController : MonoBehaviour
 	private CharacterMovement m_Movement;
 	private Vector3 m_AimPosition = Vector2.right;
 	private Vector2 m_AimDirection = Vector2.right;
+	
+	private List<WeaponController> m_Weapons = new List<WeaponController>();
+	private WeaponController m_LeftHandWeapon;
+	private WeaponController m_RightHandWeapon;
+
+	[Header("Equipment")]
+	[SerializeField]
+	private Transform m_BackpackSocket;
+	[SerializeField]
+	private float m_BackpackJitter = 0.0f;
 
 	[Header("Left Hand")]
 	[SerializeField]
@@ -74,5 +84,55 @@ public class CharacterController : MonoBehaviour
 			m_AimPosition = value;
 			m_AimDirection = new Vector2(m_AimPosition.x - transform.position.x, m_AimPosition.z - transform.position.z).normalized;
 		}
+	}
+
+	public void OnCollectWeapon(WeaponController weapon)
+	{
+		AddWeapon(weapon);
+	}
+
+	public void AddWeapon(WeaponController weapon)
+	{
+		m_Weapons.Add(weapon);
+
+		if (!TryAddToLeftHand(weapon) && !TryAddToRightHand(weapon))
+		{
+			PlaceOnBackpack(weapon);
+		}
+	}
+
+	private bool TryAddToLeftHand(WeaponController weapon)
+	{
+		if (m_LeftHandWeapon == null)
+		{
+			weapon.transform.SetParent(m_LeftHandSocket);
+			weapon.transform.localPosition = Vector3.zero;
+			weapon.transform.localRotation = Quaternion.identity;
+			m_LeftHandWeapon = weapon;
+			return true;
+		}
+
+		return false;
+	}
+
+	private bool TryAddToRightHand(WeaponController weapon)
+	{
+		if (m_RightHandWeapon == null)
+		{
+			weapon.transform.SetParent(m_RightHandSocket);
+			weapon.transform.localPosition = Vector3.zero;
+			weapon.transform.localRotation = Quaternion.identity;
+			m_RightHandWeapon = weapon;
+			return true;
+		}
+
+		return false;
+	}
+
+	private void PlaceOnBackpack(WeaponController weapon)
+	{
+		weapon.transform.SetParent(m_BackpackSocket);
+		weapon.transform.localPosition = Vector3.zero + new Vector3(Random.value - 0.5f, Random.value - 0.5f, Random.value - 0.5f) * 2.0f * m_BackpackJitter;
+		weapon.transform.localRotation = Quaternion.identity * Quaternion.AngleAxis(Random.value * 360.0f, Vector3.forward);
 	}
 }
