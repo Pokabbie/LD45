@@ -7,9 +7,7 @@ public class PlayerController : MonoBehaviour
 {
 	private CharacterController m_CharController;
 	private Vector3 m_CursorPosition;
-
-	public Transform testCursor;
-
+	
 	void Start()
 	{
 		m_CharController = GetComponent<CharacterController>();
@@ -28,7 +26,7 @@ public class PlayerController : MonoBehaviour
 		m_CharController.AimPosition = m_CursorPosition;
 
 		// DEBUG
-		testCursor.transform.position = m_CursorPosition;
+		//testCursor.transform.position = m_CursorPosition;
 
 		// Movement
 		if (Input.GetKey(KeyCode.A))

@@ -22,6 +22,16 @@ public class VoxelData : ScriptableObject
 	[SerializeField]
 	private Vector3 m_Centre;
 
+	public static VoxelData New(int width, int height, int depth)
+	{
+		VoxelData data = CreateInstance<VoxelData>();
+		data.m_Width = width;
+		data.m_Height = height;
+		data.m_Depth = depth;
+		data.m_RawData = new Voxel[width * height * depth];
+		return data;
+	}
+
 	// Format refer to
 	// https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
 	public static IEnumerable<VoxelData> ParseFrom(string path, out Color32[] palette)
@@ -97,7 +107,20 @@ public class VoxelData : ScriptableObject
 		return m_RawData[GetRawIndex(x, y, z)];
 	}
 
-	internal Mesh GenerateMesh(Vector3 pivotOffset, float scale)
+	public void SetVoxel(Voxel voxel, int x, int y, int z)
+	{
+		if (x < 0 || x >= m_Width
+		|| y < 0 || y >= m_Height
+		|| z < 0 || z >= m_Depth
+			)
+		{
+			return;
+		}
+
+		m_RawData[GetRawIndex(x, y, z)] = voxel;
+	}
+
+	public Mesh GenerateMesh(Vector3 pivotOffset, float scale)
 	{
 		m_Centre = pivotOffset + new Vector3(Width, Height, Depth) * 0.5f;
 		VoxelMeshGenerator generator = new VoxelMeshGenerator(this, scale);

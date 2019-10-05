@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 784762583fdc753418be3be054327f3a, type: 3}
+  m_Name: Room_Default
+  m_EditorClassIdentifier: 
+  m_MaxBounds: {x: 60, y: 4, z: 60}
+  m_MinBounds: {x: 40, y: 3, z: 40}
+  m_Padding: {x: 5, y: 2, z: 5}
+  m_FloorHeight: 0
+  m_CorridorHalfSize: 2
+  m_Scale: 1
+  m_NoiseThreshold: 0.5
+  m_NoiseScale: 3
+  m_HeightFrequency: 0.01
+  m_TextureNoiseScale: 1
+  m_TextureHeightFrequency: 0.008
+  m_ColourIndices: 77000000fa00000089000000
+  m_HighNoiseColourIndices: fa00000089000000
+  m_LowNoiseColourIndices: 89000000fa000000
