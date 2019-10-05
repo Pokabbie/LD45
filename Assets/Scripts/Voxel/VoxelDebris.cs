@@ -48,13 +48,14 @@ public class VoxelDebris : MonoBehaviour
 		m_Renderer.material.color = colour;
 	}
 
-	public void ApplyExplostion(float force, Vector3 position)
+	public void ApplyExplostion(float force, Vector3 position, Vector3 sprayDirection)
 	{
 		if (m_Body == null)
 			m_Body = GetComponent<Rigidbody>();
 
 		Vector3 dir = (transform.position - position).normalized;
 		m_Body.AddForce(dir * force * UnityEngine.Random.Range(0.8f, 1.2f));
+		m_Body.AddForce(sprayDirection.normalized * force);
 	}
 
 	public static VoxelDebris NewDebris(VoxelDebris source, VoxelObject sourceData, Voxel voxel, float lifeTime, Vector3 position, Quaternion rotation)

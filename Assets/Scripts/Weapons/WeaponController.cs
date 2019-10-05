@@ -68,10 +68,15 @@ public class WeaponController : MonoBehaviour
 		m_Owner.OnCollectWeapon(this);
 	}
 
-	public void OnDrop()
+	public void OnDrop(Vector3 sprayDirection)
 	{
-		m_Owner = null;
-		SetPhysicsMode(true);
+		VoxelModel model = GetComponentInChildren<VoxelModel>();
+		if (model != null)
+		{
+			model.CreateDebris(sprayDirection);
+		}
+
+		Destroy(gameObject);
 	}
 
 	private void OnTriggerEnter(Collider other)

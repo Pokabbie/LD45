@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterMovement))]
+[RequireComponent(typeof(Damageable))]
 public class CharacterController : MonoBehaviour
 {
 	private CharacterMovement m_Movement;
@@ -66,6 +68,11 @@ public class CharacterController : MonoBehaviour
 		get { return m_Movement; }
 	}
 
+	public bool IsPlayer
+	{
+		get { return gameObject.CompareTag("Player"); }
+	}
+
 	public Vector2 AimDirection
 	{
 		get { return m_AimDirection; }
@@ -84,6 +91,11 @@ public class CharacterController : MonoBehaviour
 			m_AimPosition = value;
 			m_AimDirection = new Vector2(m_AimPosition.x - transform.position.x, m_AimPosition.z - transform.position.z).normalized;
 		}
+	}
+
+	private IEnumerable<WeaponController> UnequipedWeapons
+	{
+		get { return m_Weapons.Where((w) => w != m_RightHandWeapon && w != m_LeftHandWeapon); }
 	}
 
 	public void OnCollectWeapon(WeaponController weapon)
@@ -146,5 +158,64 @@ public class CharacterController : MonoBehaviour
 			fired |= m_RightHandWeapon.TryFire(buttonJustPressed);
 
 		return fired;
+	}
+
+	public void DropWeapon(WeaponController weapon, Vector3 sprayDirection)
+	{
+		m_Weapons.Remove(weapon);
+
+		if (m_LeftHandWeapon == weapon)
+			m_LeftHandWeapon = null;
+		if (m_RightHandWeapon == weapon)
+			m_RightHandWeapon = null;
+		
+		// Try refill slot
+		var leftOvers = UnequipedWeapons;
+		if (leftOvers.Any())
+		{
+			if (!TryAddToLeftHand(leftOvers.First()))
+				TryAddToRightHand(leftOvers.First());
+		}
+
+		weapon.OnDrop(sprayDirection);
+	}
+
+	public void OnDamaged(GameObject source)
+	{
+		Vector3 sprayDirection = source.transform.forward;
+
+		// No weapons remaining
+		if (m_LeftHandWeapon == null && m_RightHandWeapon == null)
+		{
+			VoxelModel model = GetComponentInChildren<VoxelModel>();
+			if (model != null)
+			{
+				Vector3 direction = transform.position - source.transform.position;
+				model.CreateDebris(direction);
+			}
+
+			// DED
+			Destroy(gameObject); // Broadcast?
+		}
+		// Only 1 weapon in right hand
+		else if (m_LeftHandWeapon == null)
+		{
+			DropWeapon(m_RightHandWeapon, sprayDirection);
+		}
+		// Only 1 weapon in left hand
+		else if (m_RightHandWeapon == null)
+		{
+			DropWeapon(m_LeftHandWeapon, sprayDirection);
+		}
+		// Both weapons, so pick at random
+		else
+		{
+			int rand = Random.Range(0, 2);
+
+			if (rand == 0)
+				DropWeapon(m_RightHandWeapon, sprayDirection);
+			else
+				DropWeapon(m_LeftHandWeapon, sprayDirection);
+		}
 	}
 }

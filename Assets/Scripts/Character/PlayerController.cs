@@ -11,12 +11,9 @@ public class PlayerController : MonoBehaviour
 	public Transform testCursor;
 
 	void Start()
-    {
-		if (gameObject.CompareTag("Player"))
-		{
-			m_CharController = GetComponent<CharacterController>();
-		}
-		else
+	{
+		m_CharController = GetComponent<CharacterController>();
+		if (!m_CharController.IsPlayer)
 		{
 			enabled = false;
 		}

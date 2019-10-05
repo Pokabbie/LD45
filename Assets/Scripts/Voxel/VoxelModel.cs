@@ -8,9 +8,7 @@ public class VoxelModel : MonoBehaviour
 {
 	public VoxelObject m_VoxelData;
 	private VoxelObject m_PreviousVoxelData;
-
-	public bool MY_TEST = false;
-
+	
 	void Awake()
     {
 		UpdateData();
@@ -20,12 +18,6 @@ public class VoxelModel : MonoBehaviour
 	void Update()
 	{
 		UpdateData();
-
-		if (MY_TEST)
-		{
-			CreateDebris();
-			MY_TEST = false;
-		}
 	}
 #endif
 
@@ -71,9 +63,9 @@ public class VoxelModel : MonoBehaviour
 		}
 	}
 
-	public void CreateDebris()
+	public void CreateDebris(Vector3 sprayDirection)
 	{
 		if(m_VoxelData != null)
-			VoxelDebrisController.Main.SpawnDebris(m_VoxelData, transform);
+			VoxelDebrisController.Main.SpawnDebris(m_VoxelData, transform, sprayDirection);
 	}
 }
