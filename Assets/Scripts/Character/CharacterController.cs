@@ -38,20 +38,14 @@ public class CharacterController : MonoBehaviour
     {
 		// Update left hand animation
 		{
-			Transform topTransform = m_LeftHandMaxTransform;
-			Transform botTransform = m_LeftHandMinTransform;
-
-			Vector3 targetPositon = Vector3.Slerp(botTransform.localPosition, topTransform.localPosition, (m_AimDirection.y + 1.0f) * 0.5f);
+			Vector3 targetPositon = Vector3.Slerp(m_LeftHandMinTransform.localPosition, m_LeftHandMaxTransform.localPosition, (m_AimDirection.y + 1.0f) * 0.5f);
 			m_LeftHandTransform.localPosition = targetPositon;
 			m_LeftHandTransform.LookAt(m_AimPosition);
 		}
 
 		// Update right hand animation
 		{
-			Transform topTransform = m_RightHandMaxTransform;
-			Transform botTransform = m_RightHandMinTransform;
-
-			Vector3 targetPositon = Vector3.Slerp(botTransform.localPosition, topTransform.localPosition, (m_AimDirection.y + 1.0f) * 0.5f);
+			Vector3 targetPositon = Vector3.Slerp(m_RightHandMinTransform.localPosition, m_RightHandMaxTransform.localPosition, (m_AimDirection.y + 1.0f) * 0.5f);
 			m_RightHandTransform.localPosition = targetPositon;
 			m_RightHandTransform.LookAt(m_AimPosition);
 		}

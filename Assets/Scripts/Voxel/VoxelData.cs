@@ -39,7 +39,7 @@ public class VoxelData : ScriptableObject
 
 	[SerializeField]
 	private int m_Depth;
-
+	
 	// Format refer to
 	// https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
 	public static IEnumerable<VoxelData> ParseFrom(string path, out Color32[] palette)
@@ -91,7 +91,7 @@ public class VoxelData : ScriptableObject
 	{
 		get { return m_Depth; }
 	}
-
+	
 	public Voxel GetVoxel(int x, int y, int z)
 	{
 		if (x < 0 || x >= m_Width
@@ -105,9 +105,9 @@ public class VoxelData : ScriptableObject
 		return m_RawData[x, y, z];
 	}
 
-	public Mesh GenerateMesh(float scale)
+	internal Mesh GenerateMesh(Vector3 pivotOffset, float scale)
 	{
-		VoxelMeshGenerator generator = new VoxelMeshGenerator(this, scale);
+		VoxelMeshGenerator generator = new VoxelMeshGenerator(this, pivotOffset, scale);
 		return generator.GenerateMesh();
 	}
 }
@@ -123,11 +123,11 @@ internal class VoxelMeshGenerator
 	private List<Vector2> m_UVs = new List<Vector2>();
 	private List<int> m_Indices = new List<int>();
 
-	public VoxelMeshGenerator(VoxelData data, float scale)
+	public VoxelMeshGenerator(VoxelData data, Vector3 pivotOffset, float scale)
 	{
 		m_Data = data;
 		m_Scale = scale;
-		m_Centre = new Vector3(data.Width, data.Height, data.Depth) * scale * 0.5f;
+		m_Centre = pivotOffset + new Vector3(data.Width, data.Height, data.Depth) * 0.5f;
 	}
 
 	public Mesh GenerateMesh()
@@ -242,11 +242,11 @@ internal class VoxelMeshGenerator
 
 	private Vector3 GetPoint(int x, int y, int z, int dx, int dy, int dz)
 	{
-		return new Vector3(
-			(x + (dx * 0.5f)) * m_Scale,
-			(y + (dy * 0.5f)) * m_Scale,
-			(z + (dz * 0.5f)) * m_Scale
-		) - m_Centre;
+		return (new Vector3(
+			(x + (dx * 0.5f)),
+			(y + (dy * 0.5f)),
+			(z + (dz * 0.5f))
+		) - m_Centre) * m_Scale;
 	}
 
 	private int AddVertex(int x, int y, int z, int dx, int dy, int dz)

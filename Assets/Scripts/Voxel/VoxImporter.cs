@@ -12,6 +12,7 @@ public class VoxImporter : ScriptedImporter
 {
 	public Material m_SourceMaterial;
 	public float m_Scale = 0.1f;
+	public Vector3 m_PivotOffset;
 
 	public override void OnImportAsset(AssetImportContext ctx)
 	{
@@ -31,20 +32,22 @@ public class VoxImporter : ScriptedImporter
 		ctx.AddObjectToAsset(rootObject.name, rootObject);
 		importObject.m_ModelObject = rootObject;
 
+		List<VoxelData> allData = new List<VoxelData>();
+
 		foreach (string voxFile in Directory.EnumerateFiles(Path.GetDirectoryName(ctx.assetPath), importObject.name + "*.vox"))
 		{
 			ctx.DependsOnSourceAsset(voxFile);
-
-			Color32[] palette;
-			IEnumerable<VoxelData> allData = VoxelData.ParseFrom(voxFile, out palette);
-						
+			
 			// Add all separate data with model and voxel data
-			foreach (VoxelData data in allData)
+			Color32[] palette;
+			foreach (VoxelData data in VoxelData.ParseFrom(voxFile, out palette))
 			{
+				allData.Add(data);
+
 				data.name = "VOX_" + importObject.name + "_" + counter;
 				ctx.AddObjectToAsset(data.name, data);
 
-				Mesh mesh = data.GenerateMesh(m_Scale);
+				Mesh mesh = data.GenerateMesh(m_PivotOffset, m_Scale);
 				mesh.name = "MDL_" + importObject.name + "_" + counter;
 				ctx.AddObjectToAsset(mesh.name, mesh);
 
@@ -64,6 +67,8 @@ public class VoxImporter : ScriptedImporter
 				++counter;
 			}
 		}
+
+		importObject.m_VoxelData = allData.ToArray();
 	}
 
 	public Texture2D GetPalette(Color32[] palette)
@@ -78,6 +83,7 @@ public class VoxImporter : ScriptedImporter
 public class VoxelObject : ScriptableObject
 {
 	public GameObject m_ModelObject;
+	public VoxelData[] m_VoxelData;
 }
 
 internal class VoxReader : IDisposable
