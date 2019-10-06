@@ -28,17 +28,38 @@ public class CharacterMovement : MonoBehaviour
 
 	[Header("Animation")]
 	[SerializeField]
+	private bool m_ShouldAnimate = true;
+
+	[SerializeField]
+	private float m_WoobleFrequency = 15.0f;
+
+	[SerializeField]
+	private float m_WoobleAngle = 3.0f;
+
+	[SerializeField]
+	private float m_WoobleJump = 0.5f;
+
+	[SerializeField]
+	private float m_WoobleMoveScale = 0.5f;
+
+	[SerializeField]
 	private float m_FlipSpeed = 0.5f;
 
 	[SerializeField]
-	private Transform m_AnimationTarget;
+	private Transform m_PositionAnimationTarget;
+	[SerializeField]
+	private Transform m_RotationAnimationTarget;
+
+	private Vector2 m_AnimationVelocity;
+	private Vector3 m_BaseLocation;
 	private Quaternion m_BaseRotation;
 
 
 	void Start()
     {
 		m_Body = GetComponent<Rigidbody>();
-		m_BaseRotation = m_AnimationTarget.rotation;
+		m_BaseLocation = m_PositionAnimationTarget.localPosition;
+		m_BaseRotation = m_RotationAnimationTarget.rotation;
 		m_TargetRotation = Quaternion.AngleAxis(0.0f, Vector3.up) * m_BaseRotation;
 	}
 	
@@ -56,10 +77,21 @@ public class CharacterMovement : MonoBehaviour
 		m_CurrentInput = Vector2.zero;
 		m_CurrentUrgency = 0.0f;
 
-		// Rotation animation
-		if (Mathf.Abs(m_Velocity.x) > 0.01f && Mathf.Sign(m_Velocity.x) != Mathf.Sign(originalVelocity.x))
+		if (m_ShouldAnimate)
+			UpdateAnimation();
+
+		
+	}
+
+	private void UpdateAnimation()
+	{
+		Vector3 previousVelocity = m_AnimationVelocity;
+		m_AnimationVelocity = Vector3.Lerp(m_AnimationVelocity, m_Velocity, 50.0f * Time.deltaTime);
+
+		// Look rotation animation
+		if (Mathf.Abs(m_AnimationVelocity.x) > 0.01f && Mathf.Sign(m_AnimationVelocity.x) != Mathf.Sign(previousVelocity.x))
 		{
-			if (m_Velocity.x > 0.0f)
+			if (m_AnimationVelocity.x > 0.0f)
 			{
 				m_TargetRotation = Quaternion.AngleAxis(0.0f, Vector3.up) * m_BaseRotation;
 				m_IsFacingRight = true;
@@ -67,15 +99,21 @@ public class CharacterMovement : MonoBehaviour
 			else
 			{
 				m_TargetRotation = Quaternion.AngleAxis(180.0f, Vector3.up) * m_BaseRotation;
-				m_IsFacingRight = false; 
+				m_IsFacingRight = false;
 			}
 		}
-
+		
 		// Make it stable
-		if (Mathf.Abs(m_AnimationTarget.localRotation.eulerAngles.y - m_TargetRotation.eulerAngles.y) > 5.0f)
+		if (Mathf.Abs(m_RotationAnimationTarget.localRotation.eulerAngles.y - m_TargetRotation.eulerAngles.y) > 5.0f)
 		{
-			m_AnimationTarget.localRotation = Quaternion.Slerp(m_AnimationTarget.localRotation, m_TargetRotation, m_FlipSpeed * Time.deltaTime);
+			m_RotationAnimationTarget.localRotation = Quaternion.Lerp(m_RotationAnimationTarget.localRotation, m_TargetRotation, m_FlipSpeed * Time.deltaTime);
 		}
+
+		// Apply wobble
+		float wobbleValue = Mathf.Sin(Time.time * m_WoobleFrequency) * Mathf.Clamp01(m_AnimationVelocity.magnitude * m_WoobleMoveScale);
+		m_RotationAnimationTarget.localRotation = Quaternion.AngleAxis(wobbleValue * m_WoobleAngle, Vector3.forward) * m_RotationAnimationTarget.localRotation;
+
+		m_PositionAnimationTarget.localPosition = m_BaseLocation + new Vector3(0, Mathf.Abs(wobbleValue) * m_WoobleJump, 0);
 	}
 
 	public void ApplySettings(AIProfile profile)

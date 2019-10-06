@@ -50,7 +50,7 @@ public class RoomInstance : MonoBehaviour
 		// Setup contains to make management easier for spawned stuff
 		m_EnemyContentContainer = new GameObject();
 		m_EnemyContentContainer.transform.parent = transform;
-		m_EnemyContentContainer.SetActive(false);
+		//m_EnemyContentContainer.SetActive(false);
 
 		m_FloorContentContainer = new GameObject();
 		m_FloorContentContainer.transform.parent = transform;

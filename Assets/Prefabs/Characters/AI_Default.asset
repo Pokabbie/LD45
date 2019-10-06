@@ -16,7 +16,7 @@ MonoBehaviour:
   m_IdleMoveThreshold: 0.8
   m_IdleMinMoveDistance: 2
   m_IdleMaxMoveDistance: 3
-  m_IdleMoveUrgency: 0.1
+  m_IdleMoveUrgency: 0.2
   m_MaxSpeedFactor: 1
   m_MoveSpeedFactor: 1
   m_WeaponSearchMaxDistance: 10
@@ -27,7 +27,7 @@ MonoBehaviour:
   m_StrafeThreshold: 0.5
   m_StrafeMinDistance: 3
   m_StrafeMaxDistance: 5
-  m_SpotRange: 10
+  m_SpotRange: 40
   m_WeaponAttackRangeConsideration: 0
   m_MaxWeaponAttackRangeInCalc: 10
   m_MinAttackRangeOffset: 5

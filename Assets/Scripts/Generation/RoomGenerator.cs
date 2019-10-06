@@ -27,11 +27,11 @@ public class RoomGenerator : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 0), new Vector3Int(50, 3, 50), RoomConnections.Top | RoomConnections.Left);
-		//RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(-50, 0, 0), new Vector3Int(50, 3, 50), RoomConnections.Top | RoomConnections.Right);
+		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 0), new Vector3Int(50, 2, 50), RoomConnections.Top | RoomConnections.Left);
+		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(-50, 0, 0), new Vector3Int(50, 2, 50), RoomConnections.Top | RoomConnections.Right);
 
-		//RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 75), new Vector3Int(50, 3, 100), RoomConnections.Top | RoomConnections.Bottom);
-		//RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 150), new Vector3Int(50, 3, 50), RoomConnections.Bottom);
+		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 75), new Vector3Int(50, 2, 100), RoomConnections.Top | RoomConnections.Bottom);
+		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 150), new Vector3Int(50, 2, 50), RoomConnections.Bottom);
 	}
 
     // Update is called once per frame

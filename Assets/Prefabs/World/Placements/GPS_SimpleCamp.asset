@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 410bc6a88b1b6e845b7878b8bf704259, type: 3}
   m_Name: GPS_SimpleCamp
   m_EditorClassIdentifier: 
-  m_Weight: 1
   m_MinElements: 1
   m_MaxElements: 2
   m_Objects:
   - m_Weight: 1
     m_PlacedObject: {fileID: 54912641309850829, guid: 3140dd5c776775e40af8f11c6cba8274,
       type: 3}
+  m_AlwaysPlacedObjects:
+  - {fileID: 8557448789121370261, guid: ab1801e095121e445ba66499fa56d5d5, type: 3}
