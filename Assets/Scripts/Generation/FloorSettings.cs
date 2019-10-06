@@ -14,6 +14,7 @@ public class RoomPlacement
 public class FloorSettings : ScriptableObject
 {
 	[Header("General")]
+	public string m_StageName = "Untitled Stage";
 	public int m_MinRoomCount = 3;
 	public int m_MaxRoomCount = 5;
 

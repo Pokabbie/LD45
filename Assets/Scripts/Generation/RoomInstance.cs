@@ -24,25 +24,20 @@ public class RoomInstance : MonoBehaviour
 	private FloorSettings m_FloorSettings;
 	private RoomSettings m_RoomSettings;
 
-	private float m_WaitTime = 0;
+	private int m_WaitTime = 0;
 
 	void Start()
 	{
-		m_WaitTime = 0.2f;
+		m_WaitTime = 3;
 	}
 
 	void Update()
 	{
-		if (m_WaitTime > 0.0f)
+		if (m_WaitTime-- == 0)
 		{
-			m_WaitTime -= Time.deltaTime;
-
-			if (m_WaitTime <= 0.0f)
-			{
-				m_EnemyContentContainer.SetActive(true);
-				m_FloorContentContainer.SetActive(true);
-				m_WallContentContainer.SetActive(true);
-			}
+			m_EnemyContentContainer.SetActive(true);
+			m_FloorContentContainer.SetActive(true);
+			m_WallContentContainer.SetActive(true);
 		}
 	}
 

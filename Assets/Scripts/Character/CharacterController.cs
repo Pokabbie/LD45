@@ -188,6 +188,7 @@ public class CharacterController : MonoBehaviour
 	public void OnDamaged(GameObject source)
 	{
 		Vector3 sprayDirection = source.transform.forward;
+		bool isDead = false;
 
 		// No weapons remaining
 		if (m_LeftHandWeapon == null && m_RightHandWeapon == null)
@@ -199,8 +200,8 @@ public class CharacterController : MonoBehaviour
 				model.CreateDebris(direction);
 			}
 
-			// DED
-			Destroy(gameObject); // Broadcast?
+			isDead = true;
+			Destroy(gameObject);
 		}
 		// Only 1 weapon in right hand
 		else if (m_LeftHandWeapon == null)
@@ -222,6 +223,8 @@ public class CharacterController : MonoBehaviour
 			else
 				DropWeapon(m_LeftHandWeapon, sprayDirection);
 		}
+
+		GameController.Main.OnCharacterDamage(this, isDead);
 	}
 
 	public bool HasWeaponEquiped

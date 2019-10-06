@@ -11,6 +11,11 @@ public class GameController : MonoBehaviour
 	}
 
 	[SerializeField]
+	private GameObject m_GameOverScreen;
+	[SerializeField]
+	private GameObject m_PopupPrefab;
+
+	[SerializeField]
 	private GameObject m_PlayerPrefab;
 	private GameObject m_CurrentPlayer;
 
@@ -20,7 +25,13 @@ public class GameController : MonoBehaviour
 	[SerializeField]
 	private FloorSettings[] m_Floors;
 
+	[SerializeField]
+	private int m_ScoreOnKill = 50;
+	[SerializeField]
+	private int m_ScoreOnHit = 10;
+
 	private int m_FloorIndex;
+	private int m_Score;
 	private FloorInstance m_CurrentFloor;
 
 	void Start()
@@ -30,18 +41,12 @@ public class GameController : MonoBehaviour
 		else
 			Debug.LogWarning("Multiple GameController found");
 
-		m_FloorIndex = -1;
-		NextLevel();
+		Restart();
 	}
-
-	public bool DEBUGNEXLVL;
-	void Update()
+	
+	public int CurrentScore
 	{
-		if (DEBUGNEXLVL)
-		{
-			DEBUGNEXLVL = false;
-			NextLevel();
-		}
+		get { return m_Score; }
 	}
 
 	private Vector3 GetPlayerSpawnPoint()
@@ -65,6 +70,18 @@ public class GameController : MonoBehaviour
 		Camera.main.transform.position = m_CurrentPlayer.transform.position;
 	}
 
+	public void Restart()
+	{
+		if (m_CurrentPlayer == null)
+			m_CurrentPlayer = GameObject.FindGameObjectWithTag("Player");
+		if (m_CurrentPlayer != null)
+			Destroy(m_CurrentPlayer);
+
+		m_Score = 0;
+		m_FloorIndex = -1;
+		NextLevel();
+	}
+
 	public void NextLevel()
 	{
 		m_FloorIndex++;
@@ -77,10 +94,34 @@ public class GameController : MonoBehaviour
 		m_CurrentFloor = FloorInstance.PlaceFloor(m_RoomPrefab, floorSettings);
 
 		SpawnPlayer();
+
+		StageNamePopup.Main.DisplayText(floorSettings.m_StageName, m_FloorIndex);
 	}
 
 	private void CreateFloor(FloorSettings floor)
 	{
 		m_CurrentFloor = FloorInstance.PlaceFloor(m_RoomPrefab, floor);
+	}
+
+	public void OnCharacterDamage(CharacterController character, bool isDead)
+	{
+		if (character.CompareTag("Player"))
+		{
+			if (isDead)
+			{
+				m_GameOverScreen.SetActive(true);
+			}
+		}
+		else
+		{
+			int scoreReward = isDead ? m_ScoreOnKill : m_ScoreOnHit;
+			CreateWorldspaceText("+" + scoreReward, character.transform.position, Color.white);
+			m_Score += scoreReward;
+		}
+	}
+
+	public WorldSpaceText CreateWorldspaceText(string message, Vector3 position, Color colour, float duration = 2.0f)
+	{
+		return WorldSpaceText.CreatePopup(m_PopupPrefab, message, position, colour, duration);
 	}
 }

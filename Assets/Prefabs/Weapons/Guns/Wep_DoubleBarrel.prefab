@@ -186,6 +186,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
         type: 3}
+      propertyPath: m_Name
+      value: Shotgun
+      objectReference: {fileID: 0}
+    - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
+        type: 3}
+      propertyPath: m_DisplayName
+      value: Shotgun
+      objectReference: {fileID: 0}
+    - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
+        type: 3}
       propertyPath: m_ProjectileSockets.Array.data[0]
       value: 
       objectReference: {fileID: 4124313843212377560}

@@ -165,6 +165,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: d47b9e2aa2bc60f4398a1f431873bd99,
         type: 2}
+    - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
+        type: 3}
+      propertyPath: m_Name
+      value: Pistol
+      objectReference: {fileID: 0}
+    - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
+        type: 3}
+      propertyPath: m_DisplayName
+      value: Pistol
+      objectReference: {fileID: 0}
     - target: {fileID: 921376333, guid: 5957e75f498d0a94586ca090cbfc7b31, type: 3}
       propertyPath: m_Center.x
       value: 0.19

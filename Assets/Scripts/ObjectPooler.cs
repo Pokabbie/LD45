@@ -59,7 +59,7 @@ public class ObjectPooler : MonoBehaviour
 		}
 		else
 		{
-			instance.transform.parent = transform;
+			instance.transform.SetParent(transform);
 			instance.SetActive(false);
 			GetQueue(instInfo.m_SourceObject).Enqueue(instance);
 		}

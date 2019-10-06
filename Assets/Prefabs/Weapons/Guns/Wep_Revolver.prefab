@@ -159,6 +159,16 @@ PrefabInstance:
       propertyPath: m_ProjectileSockets.Array.data[0]
       value: 
       objectReference: {fileID: 3233134643332884351}
+    - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
+        type: 3}
+      propertyPath: m_Name
+      value: Revolver
+      objectReference: {fileID: 0}
+    - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
+        type: 3}
+      propertyPath: m_DisplayName
+      value: Revolver
+      objectReference: {fileID: 0}
     - target: {fileID: 921376333, guid: 5957e75f498d0a94586ca090cbfc7b31, type: 3}
       propertyPath: m_Radius
       value: 0.53

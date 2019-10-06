@@ -14,6 +14,8 @@ public class WeaponController : MonoBehaviour
 	private float m_CurrentCooldown;
 
 	[SerializeField]
+	private string m_DisplayName = "Untitled Weapon";
+	[SerializeField]
 	private WeaponSettings m_Settings;
 	[SerializeField]
 	private GameObject m_ProjectileType;
@@ -76,6 +78,11 @@ public class WeaponController : MonoBehaviour
 		SetPhysicsMode(false);
 		m_Owner = controller;
 		m_Owner.OnCollectWeapon(this);
+
+		if (m_Owner.CompareTag("Player"))
+		{
+			GameController.Main.CreateWorldspaceText("+" + m_DisplayName, controller.transform.position, Color.green);
+		}
 	}
 
 	public void OnDrop(Vector3 sprayDirection)

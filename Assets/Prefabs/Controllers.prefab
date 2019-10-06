@@ -167,9 +167,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6b456966d75d84ba16a5db87bdd30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_GameOverScreen: {fileID: 0}
+  m_PopupPrefab: {fileID: 4110863578275770220, guid: 18eaf36acf3302a439239eb36b1d118a,
+    type: 3}
   m_PlayerPrefab: {fileID: 54912641309850829, guid: 3140dd5c776775e40af8f11c6cba8274,
     type: 3}
   m_RoomPrefab: {fileID: -1430975787213152508, guid: 1dfdec31d12a14444ad351118867c7a4,
     type: 3}
   m_Floors:
   - {fileID: 11400000, guid: 3aa27ea4de26709458b7d25f4f6aa89b, type: 2}
+  m_ScoreOnKill: 50
+  m_ScoreOnHit: 10
