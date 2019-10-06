@@ -38,7 +38,6 @@ public class CharacterMovement : MonoBehaviour
 	void Start()
     {
 		m_Body = GetComponent<Rigidbody>();
-
 		m_BaseRotation = m_AnimationTarget.rotation;
 		m_TargetRotation = Quaternion.AngleAxis(0.0f, Vector3.up) * m_BaseRotation;
 	}

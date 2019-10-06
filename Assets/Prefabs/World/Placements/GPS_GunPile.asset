@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 410bc6a88b1b6e845b7878b8bf704259, type: 3}
+  m_Name: GPS_GunPile
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_MinElements: 0
+  m_MaxElements: 3
+  m_Objects:
+  - m_Weight: 1
+    m_PlacedObject: {fileID: 8557448789121370261, guid: ab1801e095121e445ba66499fa56d5d5,
+      type: 3}
+  - m_Weight: 1
+    m_PlacedObject: {fileID: 8557448789121370261, guid: 4eb47567fb64faf4c96d3c457b2886a1,
+      type: 3}
+  - m_Weight: 1
+    m_PlacedObject: {fileID: 8557448789121370261, guid: cbbe19c122a27204c8ee2ad76fa9afdd,
+      type: 3}

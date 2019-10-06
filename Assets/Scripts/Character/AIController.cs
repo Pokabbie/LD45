@@ -219,7 +219,7 @@ public class AIController : MonoBehaviour
 			}
 		}
 
-		if (m_CurrentState == AIState.Idle && m_CharController.WeaponCount < m_Profile.m_DesiredWeaponCount)
+		if (m_CurrentState == AIState.Idle && m_CharController.WeaponCount < m_Profile.m_DesiredWeaponCount && m_DiscoveredWeapons.Any())
 		{
 			m_CurrentState = AIState.FindingWeapon;
 		}
@@ -261,7 +261,7 @@ public class AIController : MonoBehaviour
 	private void Update_FindingWeapon()
 	{
 		// Hunt for new weapon
-		if (!HasValidMoveTransform())
+		if (!HasValidMoveTransform() && m_DiscoveredWeapons.Count() != 0)
 		{
 			int index = Random.Range(0, m_DiscoveredWeapons.Count() - 1);
 			GameObject targetWeapon = m_DiscoveredWeapons.ElementAt(index);
@@ -356,6 +356,8 @@ public class AIController : MonoBehaviour
 
 	private void Update_Fleeing()
 	{
+		m_AimToTarget = true;
+
 		// Flee from current target
 		if (HasValidAimTransform() && !m_MoveToTarget)
 		{
