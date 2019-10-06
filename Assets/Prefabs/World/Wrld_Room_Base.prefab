@@ -106,7 +106,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f737a67e44732d14d8fed7a663077b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TopDoorLocation: {x: 0, y: 0, z: 0}
-  m_BottomDoorLocation: {x: 0, y: 0, z: 0}
-  m_LeftDoorLocation: {x: 0, y: 0, z: 0}
-  m_RightDoorLocation: {x: 0, y: 0, z: 0}
+  m_GatePrefab: {fileID: 1702932761487651128, guid: 456c384189d19b0439ea275ab01d0c11,
+    type: 3}

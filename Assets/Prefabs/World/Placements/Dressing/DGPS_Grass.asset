@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 410bc6a88b1b6e845b7878b8bf704259, type: 3}
+  m_Name: DGPS_Grass
+  m_EditorClassIdentifier: 
+  m_MinElements: 7
+  m_MaxElements: 12
+  m_Objects:
+  - m_Weight: 1
+    m_PlacedObject: {fileID: 929445895314935306, guid: 2b7a6bdfd9c1f594c9f6d7d063d37cda,
+      type: 3}
+  m_AlwaysPlacedObjects: []

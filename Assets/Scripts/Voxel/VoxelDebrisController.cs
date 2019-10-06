@@ -27,27 +27,29 @@ public class VoxelDebrisController : MonoBehaviour
 			Debug.LogWarning("Multiple VoxelDebrisController found");
 	}
 
-	public void SpawnDebris(VoxelObject data, Vector3 position, Quaternion rotation, Vector3 sprayDirection)
+	public void SpawnDebris(VoxelObject data, Vector3 position, Quaternion rotation, Vector3 sprayDirection, int skip = 1)
 	{
 		foreach (var voxelData in data.m_VoxelData)
-			SpawnDebris(data, voxelData, position, rotation, sprayDirection);
+			SpawnDebris(data, voxelData, position, rotation, sprayDirection, skip);
 	}
 
-	public void SpawnDebris(VoxelObject data, Transform source, Vector3 sprayDirection)
+	public void SpawnDebris(VoxelObject data, Transform source, Vector3 sprayDirection, int skip = 1)
 	{
 		foreach (var voxelData in data.m_VoxelData)
-			SpawnDebris(data, voxelData, source.position, source.rotation, sprayDirection);
+			SpawnDebris(data, voxelData, source.position, source.rotation, sprayDirection.normalized, skip);
 	}
 
-	private void SpawnDebris(VoxelObject sourceData, VoxelData data, Vector3 position, Quaternion rotation, Vector3 sprayDirection)
+	private void SpawnDebris(VoxelObject sourceData, VoxelData data, Vector3 position, Quaternion rotation, Vector3 sprayDirection, int skip)
 	{
+		int counter = 0;
+
 		for (int x = 0; x < data.Width; ++x)
 			for (int y = 0; y < data.Height; ++y)
 				for (int z = 0; z < data.Depth; ++z)
 				{
 					Voxel voxel = data.GetVoxel(x, y, z);
 
-					if (!voxel.IsEmpty)
+					if (!voxel.IsEmpty && ((++counter) % skip) == 0)
 					{
 						Color colour = m_AtlasTexture.GetPixel((int)voxel.m_ColourIndex - 1, 0);
 

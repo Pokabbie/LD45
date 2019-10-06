@@ -7,6 +7,9 @@ using System.Linq;
 [RequireComponent(typeof(MeshCollider))]
 public class RoomInstance : MonoBehaviour
 {
+	[SerializeField]
+	private GameObject m_GatePrefab;
+
 	private Vector3Int m_Extents;
 	private RoomConnections m_Connections;
 	private Vector3 m_TopDoorLocation;
@@ -37,13 +40,13 @@ public class RoomInstance : MonoBehaviour
 
 		Vector2Int doorLoc;
 		if (generator.GetDoor(RoomConnections.Top, out doorLoc))
-			m_TopDoorLocation = new Vector3(doorLoc.x, m_RoomSettings.m_FloorHeight, doorLoc.y);
+			m_TopDoorLocation = transform.position + new Vector3(0.0f, m_RoomSettings.m_FloorHeight -1.0f, m_Extents.z * 0.5f);
 		if (generator.GetDoor(RoomConnections.Bottom, out doorLoc))
-			m_BottomDoorLocation = new Vector3(doorLoc.x, m_RoomSettings.m_FloorHeight, doorLoc.y);
+			m_BottomDoorLocation = transform.position + new Vector3(0.0f, m_RoomSettings.m_FloorHeight - 1.0f, m_Extents.z * -0.5f);
 		if (generator.GetDoor(RoomConnections.Left, out doorLoc))
-			m_LeftDoorLocation = new Vector3(doorLoc.x, m_RoomSettings.m_FloorHeight, doorLoc.y);
+			m_LeftDoorLocation = transform.position + new Vector3(m_Extents.x * -0.5f, m_RoomSettings.m_FloorHeight - 1.0f, 0.0f);
 		if (generator.GetDoor(RoomConnections.Right, out doorLoc))
-			m_RightDoorLocation = new Vector3(doorLoc.x, m_RoomSettings.m_FloorHeight, doorLoc.y);
+			m_RightDoorLocation = transform.position + new Vector3(m_Extents.x * 0.5f, m_RoomSettings.m_FloorHeight - 1.0f, 0.0f);
 
 		// Setup contains to make management easier for spawned stuff
 		m_EnemyContentContainer = new GameObject();
@@ -62,6 +65,12 @@ public class RoomInstance : MonoBehaviour
 		ProcessPlacementSettings(m_FloorContentContainer, generator, GetLootPlacementSettings(), true);
 		ProcessPlacementSettings(m_FloorContentContainer, generator, GetFloorDressingSettings(), true);
 		ProcessPlacementSettings(m_WallContentContainer, generator, GetWallDressingSettings(), false);
+
+		// Only make barrier on one side
+		if (HasTopDoor)
+			Instantiate(m_GatePrefab, m_TopDoorLocation, Quaternion.identity);
+		if (HasLeftDoor)
+			Instantiate(m_GatePrefab, m_LeftDoorLocation, Quaternion.AngleAxis(90.0f, Vector3.up));
 	}
 
 	private void ProcessPlacementSettings(GameObject targetContainer, RoomGeneratorHelper generator, PlacementSettings settings, bool useAccessibleSlots)
@@ -88,7 +97,9 @@ public class RoomInstance : MonoBehaviour
 				else
 					targetObj = groupSettings.SelectRandomObject().m_PlacedObject;
 
-				GameObject newObj = Instantiate(targetObj, transform.position + spots.ElementAt(i) - new Vector3(m_Extents.x, 0, m_Extents.z) * 0.5f, Quaternion.identity, targetContainer.transform);
+				Vector3 offset = new Vector3(Random.Range(-1.0f, 1.0f), -1.0f, Random.Range(-1.0f, 1.0f));
+				float angle = Random.Range(0, 360f);
+				GameObject newObj = Instantiate(targetObj, transform.position + offset + spots.ElementAt(i) - new Vector3(m_Extents.x, 0, m_Extents.z) * 0.5f, Quaternion.AngleAxis(angle, Vector3.up), targetContainer.transform);
 			}
 		}
 	}
@@ -116,6 +127,7 @@ public class RoomInstance : MonoBehaviour
 	public static RoomInstance PlaceRoom(RoomInstance prefab, FloorSettings floorSettings, RoomSettings roomSettings, Vector3Int location, Vector3Int extents, RoomConnections connection)
 	{
 		RoomInstance instance = Instantiate(prefab, location, Quaternion.identity);
+		instance.m_Connections = connection;
 		instance.m_RoomSettings = roomSettings;
 		instance.m_FloorSettings = floorSettings;
 

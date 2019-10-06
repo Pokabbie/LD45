@@ -12,7 +12,7 @@ public class Damageable : MonoBehaviour
 	[SerializeField]
 	private DamageEvent m_DamageEvent;
 
-	public void ApplyDamage(GameObject source)
+	public virtual void ApplyDamage(GameObject source)
 	{
 		m_DamageEvent.Invoke(source);
 	}
