@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 784762583fdc753418be3be054327f3a, type: 3}
+  m_Name: Room_SpawnRoom
+  m_EditorClassIdentifier: 
+  m_Padding: {x: 5, y: 0, z: 5}
+  m_MinExtents: {x: 40, y: 3, z: 40}
+  m_MaxExtents: {x: 40, y: 3, z: 40}
+  m_FloorHeight: 0
+  m_CentreRadius: 15
+  m_CorridorHalfSize: 3
+  m_Scale: 1
+  m_PlacementFrequency: 3
+  m_OverrideFloorEnemyPlacement: 1
+  m_EnemyPlacements:
+    m_MinPlacements: 0
+    m_MaxPlacements: 0
+    m_Groups: []
+  m_OverrideFloorLootPlacement: 1
+  m_LootPlacements:
+    m_MinPlacements: 1
+    m_MaxPlacements: 1
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: df7c73958c6cef44687948cede1eb798, type: 2}
+  m_OverrideFloorWallDressingPlacement: 1
+  m_WallDressingPlacements:
+    m_MinPlacements: 0
+    m_MaxPlacements: 0
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 0}
+  m_OverrideFloorFloorDressingPlacement: 1
+  m_FloorDressingPlacements:
+    m_MinPlacements: 0
+    m_MaxPlacements: 0
+    m_Groups: []
+  m_NoiseThreshold: 0.6
+  m_NoiseScale: 100000
+  m_HeightFrequency: 0.06
+  m_TextureNoiseScale: 1
+  m_TextureHeightFrequency: 0.008
+  m_ColourIndices: 0400000003000000
+  m_HighNoiseColourIndices: 
+  m_LowNoiseColourIndices: 

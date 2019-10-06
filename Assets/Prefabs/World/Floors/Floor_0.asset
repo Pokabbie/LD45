@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c637a060c2b7a9e4ca072912156319c1, type: 3}
+  m_Name: Floor_0
+  m_EditorClassIdentifier: 
+  m_MinRoomCount: 7
+  m_MaxRoomCount: 12
+  m_SpawnRoom: {fileID: 11400000, guid: f87877de25ae74d4588dcb8ea14c49a3, type: 2}
+  m_BossRoom: {fileID: 11400000, guid: 3e502f6f58acc3b458e23ca6d47c72af, type: 2}
+  m_RoomTypes:
+  - m_Weight: 1
+    m_Room: {fileID: 11400000, guid: ba93a753ed13c00478f21137707ec001, type: 2}
+  m_EnemyPlacements:
+    m_MinPlacements: 2
+    m_MaxPlacements: 4
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: 7d1a93464bf80d343960b323cb46b62c, type: 2}
+  m_LootPlacements:
+    m_MinPlacements: 1
+    m_MaxPlacements: 5
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: 4898785f69fbbc341b814750a16dbf92, type: 2}
+  m_WallDressingPlacements:
+    m_MinPlacements: 0
+    m_MaxPlacements: 0
+    m_Groups: []
+  m_FloorDressingPlacements:
+    m_MinPlacements: 0
+    m_MaxPlacements: 0
+    m_Groups: []

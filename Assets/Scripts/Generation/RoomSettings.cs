@@ -8,6 +8,8 @@ public class RoomSettings : ScriptableObject
 {
 	[Header("General")]
 	public Vector3Int m_Padding = new Vector3Int(10, 10, 10);
+	public Vector3Int m_MinExtents = new Vector3Int(20, 3, 20);
+	public Vector3Int m_MaxExtents = new Vector3Int(20, 3, 20);
 
 	public int m_FloorHeight = 0;
 	public float m_CentreRadius = 10.0f;
@@ -39,4 +41,21 @@ public class RoomSettings : ScriptableObject
 	public uint[] m_ColourIndices;
 	public uint[] m_HighNoiseColourIndices;
 	public uint[] m_LowNoiseColourIndices;
+
+	public Vector3Int RandomExtents()
+	{
+		Vector3Int extents = new Vector3Int(
+			UnityEngine.Random.Range(m_MinExtents.x, m_MaxExtents.x),
+			UnityEngine.Random.Range(m_MinExtents.y, m_MaxExtents.y),
+			UnityEngine.Random.Range(m_MinExtents.z, m_MaxExtents.z)
+		);
+
+		if (extents.x % 2 == 1)
+			extents.x += 1;
+		if (extents.y % 2 == 1)
+			extents.y += 1;
+		if (extents.z % 2 == 1)
+			extents.z += 1;
+		return extents;
+	}
 }

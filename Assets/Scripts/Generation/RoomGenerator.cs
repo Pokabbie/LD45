@@ -15,31 +15,6 @@ public enum RoomConnections
 	All = Top | Bottom | Left | Right
 }
 
-// TEMP REMOVE THIS LATER
-public class RoomGenerator : MonoBehaviour
-{
-	public RoomSettings TEMPSETTINGS;
-	public Vector3Int TEMPEXTENT;
-
-	[SerializeField]
-	private RoomInstance m_RoomPrefab;
-
-	// Start is called before the first frame update
-	void Start()
-	{
-		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 0), new Vector3Int(50, 2, 50), RoomConnections.Top | RoomConnections.Left);
-		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(-50, 0, 0), new Vector3Int(50, 2, 50), RoomConnections.Top | RoomConnections.Right);
-
-		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 75), new Vector3Int(50, 2, 100), RoomConnections.Top | RoomConnections.Bottom);
-		RoomInstance.PlaceRoom(m_RoomPrefab, TEMPSETTINGS, new Vector3Int(0, 0, 150), new Vector3Int(50, 2, 50), RoomConnections.Bottom);
-	}
-
-    // Update is called once per frame
-    void Update()
-    {
-	}
-}
-
 internal class RoomGeneratorHelper
 {
 	private Vector3Int m_TraversableExtent;
@@ -88,8 +63,6 @@ internal class RoomGeneratorHelper
 
 				for (int y = 0; y <= height; ++y)
 				{
-					int ry = (height - y);
-
 					uint[] coloursTable = m_Settings.m_ColourIndices;
 
 					float rawNoise = GetRawNoise(x, z, m_Settings.m_TextureHeightFrequency, m_Settings.m_TextureNoiseScale);
@@ -99,7 +72,7 @@ internal class RoomGeneratorHelper
 					else if (rawNoise >= 0.6f && m_Settings.m_HighNoiseColourIndices.Length != 0)
 						coloursTable = m_Settings.m_HighNoiseColourIndices;
 					
-					int colourLookupIdx = Mathf.Clamp(ry, 0, coloursTable.Length - 1);
+					int colourLookupIdx = Mathf.Clamp(height - y, 0, coloursTable.Length - 1);
 					uint colour = coloursTable[colourLookupIdx];
 					
 					voxelData.SetVoxel(new Voxel(colour), x, y, z);
@@ -154,12 +127,15 @@ internal class RoomGeneratorHelper
 	public int GetHeight(int x, int z)
 	{
 		// Ensure there is always a path from one room to another
-		if (InCorridor(x, z) || DistanceFromCentreSq(x, z) <= m_Settings.m_CentreRadius * m_Settings.m_CentreRadius)
+		if (InCorridor(x, z))
 			return m_Settings.m_FloorHeight;
 
 		if (InWall(x, z))
-			return m_TraversableExtent.y;
-
+			return FullExtent.y;
+		
+		if (DistanceFromCentreSq(x, z) <= m_Settings.m_CentreRadius * m_Settings.m_CentreRadius)
+			return m_Settings.m_FloorHeight;
+		
 		float noise = GetProcessedNoise(x, z);
 		int height = Mathf.Max(m_Settings.m_FloorHeight, (int)(m_TraversableExtent.y * noise));
 		

@@ -18,19 +18,17 @@ public class RoomInstance : MonoBehaviour
 	private GameObject m_FloorContentContainer;
 	private GameObject m_WallContentContainer;
 
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
+	private FloorSettings m_FloorSettings;
+	private RoomSettings m_RoomSettings;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private void Start()
+	{
+		m_EnemyContentContainer.SetActive(true);
+		m_FloorContentContainer.SetActive(true);
+		m_WallContentContainer.SetActive(true);
+	}
 
-	private void SetupRoom(RoomGeneratorHelper generator, RoomSettings settings, Vector3Int extents)
+	private void SetupRoom(RoomGeneratorHelper generator, Vector3Int extents)
 	{
 		m_Extents = extents;
 
@@ -39,29 +37,31 @@ public class RoomInstance : MonoBehaviour
 
 		Vector2Int doorLoc;
 		if (generator.GetDoor(RoomConnections.Top, out doorLoc))
-			m_TopDoorLocation = new Vector3(doorLoc.x, settings.m_FloorHeight, doorLoc.y);
+			m_TopDoorLocation = new Vector3(doorLoc.x, m_RoomSettings.m_FloorHeight, doorLoc.y);
 		if (generator.GetDoor(RoomConnections.Bottom, out doorLoc))
-			m_BottomDoorLocation = new Vector3(doorLoc.x, settings.m_FloorHeight, doorLoc.y);
+			m_BottomDoorLocation = new Vector3(doorLoc.x, m_RoomSettings.m_FloorHeight, doorLoc.y);
 		if (generator.GetDoor(RoomConnections.Left, out doorLoc))
-			m_LeftDoorLocation = new Vector3(doorLoc.x, settings.m_FloorHeight, doorLoc.y);
+			m_LeftDoorLocation = new Vector3(doorLoc.x, m_RoomSettings.m_FloorHeight, doorLoc.y);
 		if (generator.GetDoor(RoomConnections.Right, out doorLoc))
-			m_RightDoorLocation = new Vector3(doorLoc.x, settings.m_FloorHeight, doorLoc.y);
+			m_RightDoorLocation = new Vector3(doorLoc.x, m_RoomSettings.m_FloorHeight, doorLoc.y);
 
 		// Setup contains to make management easier for spawned stuff
 		m_EnemyContentContainer = new GameObject();
 		m_EnemyContentContainer.transform.parent = transform;
-		//m_EnemyContentContainer.SetActive(false);
+		m_EnemyContentContainer.SetActive(false);
 
 		m_FloorContentContainer = new GameObject();
 		m_FloorContentContainer.transform.parent = transform;
+		m_FloorContentContainer.SetActive(false);
 
 		m_WallContentContainer = new GameObject();
 		m_WallContentContainer.transform.parent = transform;
+		m_WallContentContainer.SetActive(false);
 
-		ProcessPlacementSettings(m_EnemyContentContainer, generator, GetEnemyPlacementSettings(settings), true);
-		ProcessPlacementSettings(m_FloorContentContainer, generator, GetLootPlacementSettings(settings), true);
-		ProcessPlacementSettings(m_FloorContentContainer, generator, GetFloorDressingSettings(settings), true);
-		ProcessPlacementSettings(m_WallContentContainer, generator, GetWallDressingSettings(settings), false);
+		ProcessPlacementSettings(m_EnemyContentContainer, generator, GetEnemyPlacementSettings(), true);
+		ProcessPlacementSettings(m_FloorContentContainer, generator, GetLootPlacementSettings(), true);
+		ProcessPlacementSettings(m_FloorContentContainer, generator, GetFloorDressingSettings(), true);
+		ProcessPlacementSettings(m_WallContentContainer, generator, GetWallDressingSettings(), false);
 	}
 
 	private void ProcessPlacementSettings(GameObject targetContainer, RoomGeneratorHelper generator, PlacementSettings settings, bool useAccessibleSlots)
@@ -88,37 +88,39 @@ public class RoomInstance : MonoBehaviour
 				else
 					targetObj = groupSettings.SelectRandomObject().m_PlacedObject;
 
-				GameObject newObj = Instantiate(targetObj, transform.position + spots.ElementAt(i) - new Vector3(m_Extents.x, m_Extents.y, m_Extents.z) * 0.5f, Quaternion.identity, targetContainer.transform);
+				GameObject newObj = Instantiate(targetObj, transform.position + spots.ElementAt(i) - new Vector3(m_Extents.x, 0, m_Extents.z) * 0.5f, Quaternion.identity, targetContainer.transform);
 			}
 		}
 	}
 
-	private PlacementSettings GetEnemyPlacementSettings(RoomSettings settings)
+	private PlacementSettings GetEnemyPlacementSettings()
 	{
-		return settings.m_EnemyPlacements;
+		return m_RoomSettings.m_OverrideFloorEnemyPlacement ? m_RoomSettings.m_EnemyPlacements : m_FloorSettings.m_EnemyPlacements;
 	}
 
-	private PlacementSettings GetLootPlacementSettings(RoomSettings settings)
+	private PlacementSettings GetLootPlacementSettings()
 	{
-		return settings.m_LootPlacements;
+		return m_RoomSettings.m_OverrideFloorLootPlacement ? m_RoomSettings.m_LootPlacements : m_FloorSettings.m_LootPlacements;
 	}
 
-	private PlacementSettings GetWallDressingSettings(RoomSettings settings)
+	private PlacementSettings GetWallDressingSettings()
 	{
-		return settings.m_WallDressingPlacements;
+		return m_RoomSettings.m_OverrideFloorWallDressingPlacement ? m_RoomSettings.m_WallDressingPlacements : m_FloorSettings.m_WallDressingPlacements;
 	}
 
-	private PlacementSettings GetFloorDressingSettings(RoomSettings settings)
+	private PlacementSettings GetFloorDressingSettings()
 	{
-		return settings.m_FloorDressingPlacements;
+		return m_RoomSettings.m_OverrideFloorFloorDressingPlacement ? m_RoomSettings.m_FloorDressingPlacements : m_FloorSettings.m_FloorDressingPlacements;
 	}
 
-	public static RoomInstance PlaceRoom(RoomInstance prefab, RoomSettings settings, Vector3Int location, Vector3Int extents, RoomConnections connection)
+	public static RoomInstance PlaceRoom(RoomInstance prefab, FloorSettings floorSettings, RoomSettings roomSettings, Vector3Int location, Vector3Int extents, RoomConnections connection)
 	{
 		RoomInstance instance = Instantiate(prefab, location, Quaternion.identity);
+		instance.m_RoomSettings = roomSettings;
+		instance.m_FloorSettings = floorSettings;
 
-		RoomGeneratorHelper generator = new RoomGeneratorHelper(settings, extents, connection);
-		instance.SetupRoom(generator, settings, extents);
+		RoomGeneratorHelper generator = new RoomGeneratorHelper(roomSettings, extents, connection);
+		instance.SetupRoom(generator, extents);
 		return instance;
 	}
 
