@@ -19,8 +19,8 @@ MonoBehaviour:
   m_CorridorHalfSize: 2
   m_Scale: 1
   m_NoiseThreshold: 0.5
-  m_NoiseScale: 3
-  m_HeightFrequency: 0.01
+  m_NoiseScale: 1
+  m_HeightFrequency: 0.05
   m_TextureNoiseScale: 1
   m_TextureHeightFrequency: 0.008
   m_ColourIndices: 77000000fa00000089000000
