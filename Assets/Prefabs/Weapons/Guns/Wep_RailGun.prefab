@@ -167,7 +167,7 @@ PrefabInstance:
     - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
         type: 3}
       propertyPath: m_DisplayName
-      value: Revolver
+      value: Rail Gun
       objectReference: {fileID: 0}
     - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
         type: 3}

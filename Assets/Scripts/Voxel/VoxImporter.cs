@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor.Experimental.AssetImporters;
+#endif
 using System;
 using System.IO;
 using System.Linq;
+
+#if UNITY_EDITOR
 
 // Work around import splitting, just look for .vox files with same file name
 [ScriptedImporter(1, "voximport")]
@@ -79,6 +83,7 @@ public class VoxImporter : ScriptedImporter
 		return tex;
 	}
 }
+#endif
 
 internal class VoxReader : IDisposable
 {

@@ -31,7 +31,7 @@ public class VoxelData : ScriptableObject
 		data.m_RawData = new Voxel[width * height * depth];
 		return data;
 	}
-
+	
 	// Format refer to
 	// https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
 	public static IEnumerable<VoxelData> ParseFrom(string path, out Color32[] palette)
