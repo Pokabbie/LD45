@@ -13,9 +13,11 @@ public class ProjectileController : MonoBehaviour
 	private ProjectileSettings m_Settings;
 
 	// Max checks
-	private const int c_MaxChecks = 5;
+	private const int c_MaxChecks = 0;
 	private const float c_StepSize = 0.5f;
 	private const float c_CheckSize = 0.05f;
+
+	private const float c_SelfDamageTimeTheshold = 0.1f;
 
 	private int m_HitCount;
 	private float m_LifeTime;
@@ -39,7 +41,7 @@ public class ProjectileController : MonoBehaviour
 
 	public static ProjectileController LaunchProjectile(GameObject baseObj, GameObject owner, Vector3 origin, Vector3 direction)
 	{
-		Vector3 safeOrigin = origin + direction * c_StepSize;
+		Vector3 safeOrigin = origin;
 
 		for (int i = 0; i < c_MaxChecks; ++i)
 		{
@@ -57,8 +59,8 @@ public class ProjectileController : MonoBehaviour
 
 	public void OnCollisionEnter(Collision collision)
 	{
-		// Prevent player self damage
-		if (m_Owner != collision.gameObject || !m_Owner.CompareTag("Player"))
+		// Prevent self damage on initial shot
+		if (m_LifeTime > c_SelfDamageTimeTheshold || m_Owner != collision.gameObject)// || !m_Owner.CompareTag("Player"))
 		{
 			Damageable damageable = collision.gameObject.GetComponent<Damageable>();
 
@@ -81,5 +83,21 @@ public class ProjectileController : MonoBehaviour
 	public void DestroySelf()
 	{
 		Destroy(gameObject);
+	}
+
+	public float Range
+	{
+		get
+		{
+			return m_Settings.m_LifeTime * m_Settings.m_Speed;
+		}
+	}
+
+	public bool DoesBounce
+	{
+		get
+		{
+			return m_Settings.m_BounceCount != 0;
+		}
 	}
 }

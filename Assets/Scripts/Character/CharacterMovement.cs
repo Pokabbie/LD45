@@ -8,10 +8,14 @@ public class CharacterMovement : MonoBehaviour
 	private Rigidbody m_Body;
 	private Vector2 m_Velocity;
 	private Vector2 m_CurrentInput;
+	private float m_CurrentUrgency;
 
 	private Quaternion m_TargetRotation;
 	private bool m_IsFacingRight = true;
-	
+
+	private float m_MaxSpeedFactor = 1.0f;
+	private float m_MoveSpeedFactor = 1.0f;
+
 	[Header("Movement")]
 	[SerializeField]
 	private float m_MoveSpeed = 1.0f;
@@ -43,14 +47,15 @@ public class CharacterMovement : MonoBehaviour
     {
 		Vector3 originalVelocity = m_Velocity;
 
-		Vector2 frameInput = m_CurrentInput * m_MoveSpeed;
-		m_Velocity = Vector2.ClampMagnitude(m_Velocity + frameInput, m_MaxSpeed);
+		Vector2 frameInput = m_CurrentInput * m_MoveSpeed * m_MoveSpeedFactor;
+		m_Velocity = Vector2.ClampMagnitude(m_Velocity + frameInput, m_MaxSpeed * m_MaxSpeedFactor * Mathf.Clamp01(m_CurrentUrgency));
 
 		Vector2 frameVelocity = m_Velocity * Time.deltaTime;
 		m_Body.velocity = new Vector3(frameVelocity.x, m_Body.velocity.y, frameVelocity.y);
 
 		m_Velocity = Vector2.Lerp(m_Velocity, Vector2.zero, m_Decay * Time.deltaTime);
 		m_CurrentInput = Vector2.zero;
+		m_CurrentUrgency = 0.0f;
 
 		// Rotation animation
 		if (Mathf.Abs(m_Velocity.x) > 0.01f && Mathf.Sign(m_Velocity.x) != Mathf.Sign(originalVelocity.x))
@@ -73,9 +78,16 @@ public class CharacterMovement : MonoBehaviour
 			m_AnimationTarget.localRotation = Quaternion.Slerp(m_AnimationTarget.localRotation, m_TargetRotation, m_FlipSpeed * Time.deltaTime);
 		}
 	}
-	
-	public void Move(Vector2 scaledDirection)
+
+	public void ApplySettings(AIProfile profile)
 	{
+		m_MaxSpeedFactor = profile.m_MaxSpeedFactor;
+		m_MoveSpeedFactor = profile.m_MoveSpeedFactor;
+	}
+	
+	public void Move(Vector2 scaledDirection, float urgency = 1.0f)
+	{
+		m_CurrentUrgency += urgency;
 		m_CurrentInput += scaledDirection;
 	}
 

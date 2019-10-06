@@ -98,6 +98,11 @@ public class CharacterController : MonoBehaviour
 		get { return m_Weapons.Where((w) => w != m_RightHandWeapon && w != m_LeftHandWeapon); }
 	}
 
+	public int WeaponCount
+	{
+		get { return m_Weapons.Count; }
+	}
+
 	public void OnCollectWeapon(WeaponController weapon)
 	{
 		AddWeapon(weapon);
@@ -148,14 +153,14 @@ public class CharacterController : MonoBehaviour
 		weapon.transform.localRotation = Quaternion.identity * Quaternion.AngleAxis(Random.value * 360.0f, Vector3.forward);
 	}
 
-	public bool FireAnyWeapon(bool buttonJustPressed)
+	public bool FireAnyWeapon(bool buttonJustPressed, float fireRateScale = 1.0f)
 	{
 		bool fired = false;
 		if (m_LeftHandWeapon != null)
-			fired |= m_LeftHandWeapon.TryFire(buttonJustPressed);
+			fired |= m_LeftHandWeapon.TryFire(buttonJustPressed, fireRateScale);
 
 		if (m_RightHandWeapon != null)
-			fired |= m_RightHandWeapon.TryFire(buttonJustPressed);
+			fired |= m_RightHandWeapon.TryFire(buttonJustPressed, fireRateScale);
 
 		return fired;
 	}
@@ -217,5 +222,25 @@ public class CharacterController : MonoBehaviour
 			else
 				DropWeapon(m_LeftHandWeapon, sprayDirection);
 		}
+	}
+
+	public bool HasWeaponEquiped
+	{
+		get { return m_LeftHandWeapon != null || m_RightHandWeapon != null; }
+	}
+
+	public float LeftHandWeaponRange
+	{
+		get { return m_LeftHandWeapon != null ? m_LeftHandWeapon.Range : 0; }
+	}
+
+	public float RightHandWeaponRange
+	{
+		get { return m_RightHandWeapon != null ? m_RightHandWeapon.Range : 0; }
+	}
+
+	public float AttackRange
+	{
+		get { return Mathf.Max(LeftHandWeaponRange, RightHandWeaponRange); }
 	}
 }

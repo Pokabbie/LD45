@@ -20,6 +20,8 @@ public class WeaponController : MonoBehaviour
 	[SerializeField]
 	private Transform[] m_ProjectileSockets;
 
+	private float m_Range;
+
 	void Start()
     {
 		m_Body = GetComponent<Rigidbody>();
@@ -29,6 +31,9 @@ public class WeaponController : MonoBehaviour
 
 		if (m_ProjectileSockets.Length == 0)
 			Debug.Log("No projectile sockets for " + gameObject.name);
+
+		ProjectileController projType = m_ProjectileType.GetComponentInChildren<ProjectileController>();
+		m_Range = projType.Range;
 	}
 
 	void Update()
@@ -42,6 +47,11 @@ public class WeaponController : MonoBehaviour
 	public bool CanFire
 	{
 		get { return m_CurrentCooldown == 0.0f; }
+	}
+
+	public float Range
+	{
+		get { return m_Range; }
 	}
 
 	private void SetPhysicsMode(bool enabled)
@@ -88,7 +98,7 @@ public class WeaponController : MonoBehaviour
 		}
 	}
 
-	public bool TryFire(bool buttonJustPressed)
+	public bool TryFire(bool buttonJustPressed, float fireRateScale)
 	{
 		if (m_Settings.m_Automatic || buttonJustPressed)
 		{
@@ -100,7 +110,7 @@ public class WeaponController : MonoBehaviour
 					ProjectileController.LaunchProjectile(m_ProjectileType, m_Owner.gameObject, socket.position, new Vector3(m_Owner.AimDirection.x, 0, m_Owner.AimDirection.y).normalized);
 				}
 
-				m_CurrentCooldown = m_Settings.m_Cooldown;
+				m_CurrentCooldown = m_Settings.m_Cooldown * fireRateScale;
 				return true;
 			}
 		}

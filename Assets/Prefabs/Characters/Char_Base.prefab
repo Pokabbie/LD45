@@ -197,6 +197,7 @@ GameObject:
   - component: {fileID: 669584996}
   - component: {fileID: 669584997}
   - component: {fileID: 2334356685147444615}
+  - component: {fileID: 7919136948892695169}
   m_Layer: 8
   m_Name: Char_Base
   m_TagString: Untagged
@@ -237,9 +238,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1
+  m_Height: 1.5
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!54 &669584998
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -268,7 +269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4fce8e2ccdf1f04f9237dc54a7c40dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testCursor: {fileID: 0}
 --- !u!114 &669584996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -334,6 +334,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7919136948892695169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340677514977077914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fe12e56a77669944bff37de3d86eebe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_DefaultProfile: {fileID: 11400000, guid: 3416778962229e749a4bcc4399a12889, type: 2}
 --- !u!1 &2510013996402264511
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,4 +481,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_VoxelData: {fileID: 0}
-  MY_TEST: 0
