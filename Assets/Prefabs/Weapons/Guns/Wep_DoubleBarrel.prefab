@@ -204,6 +204,12 @@ PrefabInstance:
       propertyPath: m_ProjectileSockets.Array.data[1]
       value: 
       objectReference: {fileID: 2342750283899371451}
+    - target: {fileID: 3884041680769553338, guid: 5957e75f498d0a94586ca090cbfc7b31,
+        type: 3}
+      propertyPath: m_Settings
+      value: 
+      objectReference: {fileID: 11400000, guid: 19ba07d1bdb31984c92c04f682c665ba,
+        type: 2}
     - target: {fileID: 921376333, guid: 5957e75f498d0a94586ca090cbfc7b31, type: 3}
       propertyPath: m_Radius
       value: 0.74

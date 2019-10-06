@@ -46,6 +46,15 @@ public class PlayerController : MonoBehaviour
 			m_CharController.Movement.Move(Vector2.down);
 		}
 
+		if (Input.GetKeyDown(KeyCode.LeftShift))
+		{
+			m_CharController.Movement.SetShouldRun(true);
+		}
+		if (Input.GetKeyUp(KeyCode.LeftShift))
+		{
+			m_CharController.Movement.SetShouldRun(false);
+		}
+
 		// Shooting
 		if (Input.GetMouseButton(0))
 		{

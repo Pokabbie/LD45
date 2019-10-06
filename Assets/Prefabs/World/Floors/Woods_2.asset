@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c637a060c2b7a9e4ca072912156319c1, type: 3}
+  m_Name: Woods_2
+  m_EditorClassIdentifier: 
+  m_StageName: Woods
+  m_MinRoomCount: 5
+  m_MaxRoomCount: 6
+  m_AIProfile: {fileID: 11400000, guid: 340e9f68569f09a45b9a80aff949dc8d, type: 2}
+  m_DefaultWeapons:
+  - {fileID: 8557448789121370261, guid: ab1801e095121e445ba66499fa56d5d5, type: 3}
+  - {fileID: 8557448789121370261, guid: ab1801e095121e445ba66499fa56d5d5, type: 3}
+  m_SpawnRoom: {fileID: 11400000, guid: f87877de25ae74d4588dcb8ea14c49a3, type: 2}
+  m_BossRoom: {fileID: 11400000, guid: 3e502f6f58acc3b458e23ca6d47c72af, type: 2}
+  m_RoomTypes:
+  - m_Weight: 1
+    m_Room: {fileID: 11400000, guid: ba93a753ed13c00478f21137707ec001, type: 2}
+  m_EnemyPlacements:
+    m_MinPlacements: 3
+    m_MaxPlacements: 5
+    m_Groups:
+    - m_Weight: 0.5
+      m_PlacedGroup: {fileID: 11400000, guid: 7d1a93464bf80d343960b323cb46b62c, type: 2}
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: 0ddbdbe7f8f43664e8e9c70ac26671b0, type: 2}
+  m_LootPlacements:
+    m_MinPlacements: 1
+    m_MaxPlacements: 5
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: 4898785f69fbbc341b814750a16dbf92, type: 2}
+  m_WallDressingPlacements:
+    m_MinPlacements: 5
+    m_MaxPlacements: 5
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: ac99fb3dec6e92b42b84979f0abfa2a2, type: 2}
+  m_FloorDressingPlacements:
+    m_MinPlacements: 7
+    m_MaxPlacements: 12
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: 8cfa25466251dfd4d80f52fe6e02a35c, type: 2}
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: f0ebb377fde433d4480947777ef14f61, type: 2}
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: 6cda408957bcd03489b7483bd865baaf, type: 2}

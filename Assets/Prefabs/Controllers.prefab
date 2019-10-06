@@ -176,5 +176,8 @@ MonoBehaviour:
     type: 3}
   m_Floors:
   - {fileID: 11400000, guid: 3aa27ea4de26709458b7d25f4f6aa89b, type: 2}
+  - {fileID: 11400000, guid: 9adf63b7a78bc434cbc36f27071cfb45, type: 2}
+  - {fileID: 11400000, guid: 98c35b42115779546988f731e24fc05d, type: 2}
+  - {fileID: 11400000, guid: f58364abbe60572489014ba2b14eddd8, type: 2}
   m_ScoreOnKill: 50
   m_ScoreOnHit: 10

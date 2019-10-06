@@ -24,4 +24,10 @@ MonoBehaviour:
   - m_Weight: 1
     m_PlacedObject: {fileID: 8557448789121370261, guid: cbbe19c122a27204c8ee2ad76fa9afdd,
       type: 3}
+  - m_Weight: 0.5
+    m_PlacedObject: {fileID: 8557448789121370261, guid: c9b62c1b85d4e3948b0d8d72b4914628,
+      type: 3}
+  - m_Weight: 2
+    m_PlacedObject: {fileID: 8557448789121370261, guid: e85909fa2b994e149a2d851f389537bc,
+      type: 3}
   m_AlwaysPlacedObjects: []

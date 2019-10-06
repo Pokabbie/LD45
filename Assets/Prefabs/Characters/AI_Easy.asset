@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4d5cffa061d65d499eb13b2a58529a4, type: 3}
+  m_Name: AI_Easy
+  m_EditorClassIdentifier: 
+  m_TickRate: 1
+  m_IdleMoveThreshold: 0.8
+  m_IdleMinMoveDistance: 2
+  m_IdleMaxMoveDistance: 3
+  m_IdleMoveUrgency: 0.2
+  m_MaxSpeedFactor: 0.6
+  m_MoveSpeedFactor: 1
+  m_WeaponSearchMaxDistance: 10
+  m_MinumumWeaponCount: 1
+  m_DesiredWeaponCount: 2
+  m_RequireLOS: 1
+  m_ShootCooldownScale: 3
+  m_StrafeThreshold: 0.8
+  m_StrafeMinDistance: 1
+  m_StrafeMaxDistance: 3
+  m_SpotRange: 35
+  m_WeaponAttackRangeConsideration: 0
+  m_MaxWeaponAttackRangeInCalc: 10
+  m_MinAttackRangeOffset: 2
+  m_MaxAttackRangeOffset: 8
+  m_MinFleeRange: 3
+  m_MaxFleeRange: 8

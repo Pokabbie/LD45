@@ -87,6 +87,11 @@ public class WeaponController : MonoBehaviour
 
 	public void OnDrop(Vector3 sprayDirection)
 	{
+		if (m_Owner != null && m_Owner.CompareTag("Player"))
+		{
+			GameController.Main.CreateWorldspaceText("-" + m_DisplayName, m_Owner.transform.position, Color.red);
+		}
+
 		VoxelModel model = GetComponentInChildren<VoxelModel>();
 		if (model != null)
 		{

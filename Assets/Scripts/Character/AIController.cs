@@ -185,12 +185,20 @@ public class AIController : MonoBehaviour
 
 	public void SetProfile(AIProfile profile)
 	{
-		m_Profile = profile;
-		m_DecisionTimer = 0.0f;
+		if (!gameObject.activeInHierarchy && m_Profile == null)
+		{
+			// Defer it
+			m_DefaultProfile = profile;
+		}
+		else
+		{
+			m_Profile = profile;
+			m_DecisionTimer = 0.0f;
 
-		CharacterMovement movement = GetComponent<CharacterMovement>();
-		Debug.Assert(movement != null, "Unable to fetch CharacterMovement");
-		movement.ApplySettings(profile);
+			CharacterMovement movement = GetComponent<CharacterMovement>();
+			Debug.Assert(movement != null, "Unable to fetch CharacterMovement");
+			movement.ApplySettings(profile);
+		}
 	}
 
 	private void PumpBrain()
@@ -453,5 +461,10 @@ public class AIController : MonoBehaviour
 	{
 		// TODO - Hookup checks
 		return desiredSpot;
+	}
+
+	public bool HasDefaultProfile
+	{
+		get { return m_DefaultProfile != null; }
 	}
 }

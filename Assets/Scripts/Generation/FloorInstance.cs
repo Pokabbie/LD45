@@ -10,6 +10,12 @@ public class FloorInstance : MonoBehaviour
 	public void Cleanup()
 	{
 		Destroy(gameObject);
+
+		foreach (GameObject projectile in GameObject.FindGameObjectsWithTag("Projectile"))
+		{
+			if (projectile != null)
+				Destroy(projectile);
+		}
 	}
 
 	public static FloorInstance PlaceFloor(RoomInstance roomPrefab, FloorSettings floorSettings)
@@ -44,7 +50,13 @@ public class FloorInstance : MonoBehaviour
 			return new PlacedRoomInfo(settings, centre, extents);
 		}
 		else if (roomInfos.Count == totalCount - 1)
+		{
 			settings = m_FloorSettings.m_BossRoom;
+
+			PlacedRoomInfo roomInfo = PlacedRoomInfo.FindRoomSlot(settings, roomInfos);
+			roomInfo.m_IsBossRoom = true;
+			return roomInfo;
+		}
 		else
 			settings = m_FloorSettings.SelectRandomRoom();
 		
@@ -53,7 +65,7 @@ public class FloorInstance : MonoBehaviour
 
 	private RoomInstance CreateRoom(PlacedRoomInfo roomInfo)
 	{
-		RoomInstance instance = RoomInstance.PlaceRoom(m_RoomPrefab, m_FloorSettings, roomInfo.m_Settings, roomInfo.m_Centre, roomInfo.m_Extents, roomInfo.m_Connection);
+		RoomInstance instance = RoomInstance.PlaceRoom(m_RoomPrefab, roomInfo.m_IsBossRoom, m_FloorSettings, roomInfo.m_Settings, roomInfo.m_Centre, roomInfo.m_Extents, roomInfo.m_Connection);
 		instance.transform.parent = transform;
 		return instance;
 	}
@@ -65,6 +77,7 @@ internal class PlacedRoomInfo
 	public Vector3Int m_Centre;
 	public Vector3Int m_Extents;
 	public RoomConnections m_Connection;
+	public bool m_IsBossRoom;
 
 	public PlacedRoomInfo(RoomSettings settings, Vector3Int centre, Vector3Int extents, RoomConnections connection = RoomConnections.None)
 	{

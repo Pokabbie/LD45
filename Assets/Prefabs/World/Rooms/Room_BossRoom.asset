@@ -20,16 +20,18 @@ MonoBehaviour:
   m_CorridorHalfSize: 3
   m_Scale: 1
   m_PlacementFrequency: 3
-  m_OverrideFloorEnemyPlacement: 1
+  m_OverrideFloorEnemyPlacement: 0
   m_EnemyPlacements:
     m_MinPlacements: 0
     m_MaxPlacements: 0
     m_Groups: []
   m_OverrideFloorLootPlacement: 1
   m_LootPlacements:
-    m_MinPlacements: 0
-    m_MaxPlacements: 0
-    m_Groups: []
+    m_MinPlacements: 1
+    m_MaxPlacements: 1
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: 3ae38dc5b0c9359449298ce5d4482966, type: 2}
   m_OverrideFloorWallDressingPlacement: 1
   m_WallDressingPlacements:
     m_MinPlacements: 0
@@ -39,9 +41,13 @@ MonoBehaviour:
       m_PlacedGroup: {fileID: 0}
   m_OverrideFloorFloorDressingPlacement: 1
   m_FloorDressingPlacements:
-    m_MinPlacements: 0
-    m_MaxPlacements: 0
-    m_Groups: []
+    m_MinPlacements: 5
+    m_MaxPlacements: 5
+    m_Groups:
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: 6cda408957bcd03489b7483bd865baaf, type: 2}
+    - m_Weight: 1
+      m_PlacedGroup: {fileID: 11400000, guid: f0ebb377fde433d4480947777ef14f61, type: 2}
   m_NoiseThreshold: 0.6
   m_NoiseScale: 100000
   m_HeightFrequency: 0.06

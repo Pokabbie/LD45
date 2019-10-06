@@ -10,8 +10,11 @@ public class RoomInstance : MonoBehaviour
 	[SerializeField]
 	private GameObject m_GatePrefab;
 
+	[SerializeField]
+	private bool m_IsBossRoom;
 	private Vector3Int m_Extents;
 	private RoomConnections m_Connections;
+
 	private Vector3 m_TopDoorLocation;
 	private Vector3 m_BottomDoorLocation;
 	private Vector3 m_LeftDoorLocation;
@@ -23,21 +26,37 @@ public class RoomInstance : MonoBehaviour
 
 	private FloorSettings m_FloorSettings;
 	private RoomSettings m_RoomSettings;
-
+	
 	private int m_WaitTime = 0;
 
 	void Start()
 	{
-		m_WaitTime = 3;
+		m_WaitTime = 4;
 	}
 
 	void Update()
 	{
 		if (m_WaitTime-- == 0)
 		{
-			m_EnemyContentContainer.SetActive(true);
 			m_FloorContentContainer.SetActive(true);
 			m_WallContentContainer.SetActive(true);
+
+			if (!m_IsBossRoom)
+				m_EnemyContentContainer.SetActive(true);
+		}
+
+		if (m_IsBossRoom && !m_EnemyContentContainer.activeInHierarchy)
+		{
+			GameObject player = GameObject.FindGameObjectWithTag("Player");
+			if (player != null)
+			{
+				float spawnDistance = Mathf.Min(m_Extents.x, m_Extents.z) * 0.5f - 5.0f;
+
+				float playerDistSq = (player.transform.position - transform.position).sqrMagnitude;
+
+				if(playerDistSq <= spawnDistance * spawnDistance)
+					m_EnemyContentContainer.SetActive(true);
+			}
 		}
 	}
 
@@ -87,6 +106,12 @@ public class RoomInstance : MonoBehaviour
 	{
 		int placeCount = Random.Range(settings.m_MinPlacements, settings.m_MaxPlacements);
 
+		if (targetContainer == m_EnemyContentContainer && m_IsBossRoom)
+			placeCount = 1 + GameController.Main.CurrentLevel * 2;
+
+		if (m_IsBossRoom) //?
+			placeOffset += new Vector3(0, -1.62f, 0);
+
 		for (int n = 0; n < placeCount; ++n)
 		{
 			bool hasSlots = useAccessibleSlots ? generator.AccessibleSpots.Any() : generator.InaccessibleSpots.Any();
@@ -109,9 +134,33 @@ public class RoomInstance : MonoBehaviour
 
 				Vector3 offset = new Vector3(Random.Range(-1.0f, 1.0f), -1.0f, Random.Range(-1.0f, 1.0f)) + placeOffset;
 				float angle = randomRotations ? Random.Range(0, 360f) : 0.0f;
-				GameObject newObj = Instantiate(targetObj, transform.position + offset + spots.ElementAt(i) - new Vector3(m_Extents.x, 0, m_Extents.z) * 0.5f, Quaternion.AngleAxis(angle, Vector3.up), targetContainer.transform);
+
+				Vector3 spawnPosition = transform.position + offset + spots.ElementAt(i) - new Vector3(m_Extents.x, 0, m_Extents.z) * 0.5f;
+				GameObject newObj = Instantiate(targetObj, spawnPosition, Quaternion.AngleAxis(angle, Vector3.up), targetContainer.transform);
+
+				// Should spawn weapon too?
+				CharacterController character = newObj.GetComponentInChildren<CharacterController>();
+				if (character != null)
+				{
+					foreach (GameObject weapon in GetDefaultWeapons())
+						Instantiate(weapon, spawnPosition + Vector3.up * 1.5f, Quaternion.identity, targetContainer.transform);
+
+					AIController aiController = newObj.GetComponentInChildren<AIController>();
+					if(!aiController.HasDefaultProfile)
+						aiController.SetProfile(GetAIProfile());
+				}
 			}
 		}
+	}
+
+	private AIProfile GetAIProfile()
+	{
+		return m_FloorSettings.m_AIProfile;
+	}
+
+	private GameObject[] GetDefaultWeapons()
+	{
+		return m_FloorSettings.m_DefaultWeapons;
 	}
 
 	private PlacementSettings GetEnemyPlacementSettings()
@@ -134,10 +183,11 @@ public class RoomInstance : MonoBehaviour
 		return m_RoomSettings.m_OverrideFloorFloorDressingPlacement ? m_RoomSettings.m_FloorDressingPlacements : m_FloorSettings.m_FloorDressingPlacements;
 	}
 
-	public static RoomInstance PlaceRoom(RoomInstance prefab, FloorSettings floorSettings, RoomSettings roomSettings, Vector3Int location, Vector3Int extents, RoomConnections connection)
+	public static RoomInstance PlaceRoom(RoomInstance prefab, bool isBossRoom, FloorSettings floorSettings, RoomSettings roomSettings, Vector3Int location, Vector3Int extents, RoomConnections connection)
 	{
 		RoomInstance instance = Instantiate(prefab, location, Quaternion.identity);
 		instance.m_Connections = connection;
+		instance.m_IsBossRoom = isBossRoom;
 		instance.m_RoomSettings = roomSettings;
 		instance.m_FloorSettings = floorSettings;
 

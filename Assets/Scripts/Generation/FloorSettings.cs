@@ -17,8 +17,10 @@ public class FloorSettings : ScriptableObject
 	public string m_StageName = "Untitled Stage";
 	public int m_MinRoomCount = 3;
 	public int m_MaxRoomCount = 5;
+	public AIProfile m_AIProfile;
 
 	[Header("Rooms")]
+	public GameObject[] m_DefaultWeapons;
 	public RoomSettings m_SpawnRoom;
 	public RoomSettings m_BossRoom;
 	public RoomPlacement[] m_RoomTypes;

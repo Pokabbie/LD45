@@ -1113,9 +1113,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5721810635480503292, guid: 020396da46aba19438f7419611ad2f90,
         type: 3}
+      propertyPath: m_Floors.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5721810635480503292, guid: 020396da46aba19438f7419611ad2f90,
+        type: 3}
       propertyPath: m_GameOverScreen
       value: 
       objectReference: {fileID: 1811802864}
+    - target: {fileID: 5721810635480503292, guid: 020396da46aba19438f7419611ad2f90,
+        type: 3}
+      propertyPath: m_Floors.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: b0a79f7b5f4bd424c8746b444af46c69,
+        type: 2}
+    - target: {fileID: 5721810635480503292, guid: 020396da46aba19438f7419611ad2f90,
+        type: 3}
+      propertyPath: m_Floors.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: ffe898618786d834996055b0d5af95eb,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 020396da46aba19438f7419611ad2f90, type: 3}
 --- !u!1001 &6690057131866430692

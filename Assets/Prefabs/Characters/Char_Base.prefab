@@ -296,9 +296,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4761d276f043b1347a170a76c4b29d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_StaminaBar: {fileID: 0}
+  m_MaxStamina: 3
   m_MoveSpeed: 1000
   m_MaxSpeed: 1000
   m_Decay: 5
+  m_RunMaxSpeed: 1500
   m_ShouldAnimate: 1
   m_WoobleFrequency: 15
   m_WoobleAngle: 3
@@ -356,7 +359,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe12e56a77669944bff37de3d86eebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DefaultProfile: {fileID: 11400000, guid: 3416778962229e749a4bcc4399a12889, type: 2}
+  m_DefaultProfile: {fileID: 0}
 --- !u!1 &2425615899336499226
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,3 +532,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_VoxelData: {fileID: 0}
+  m_DebrisStep: 1

@@ -124,4 +124,10 @@ public class GameController : MonoBehaviour
 	{
 		return WorldSpaceText.CreatePopup(m_PopupPrefab, message, position, colour, duration);
 	}
+
+	public int CurrentLevel
+	{
+		get { return m_FloorIndex + 1; }
+	}
+
 }

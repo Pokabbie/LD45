@@ -16,7 +16,16 @@ public class CharacterMovement : MonoBehaviour
 	private float m_MaxSpeedFactor = 1.0f;
 	private float m_MoveSpeedFactor = 1.0f;
 
+	private float m_Stamina;
+	private bool m_ShouldRun;
+
 	[Header("Movement")]
+	[SerializeField]
+	private GameObject m_StaminaBar;
+
+	[SerializeField]
+	private float m_MaxStamina = 3.0f;
+
 	[SerializeField]
 	private float m_MoveSpeed = 1.0f;
 	
@@ -25,6 +34,12 @@ public class CharacterMovement : MonoBehaviour
 
 	[SerializeField]
 	private float m_Decay = 0.5f;
+
+	[SerializeField]
+	private float m_RunStaminaThreshold = 1.0f;
+
+	[SerializeField]
+	private float m_RunMaxSpeed = 20.0f;
 
 	[Header("Animation")]
 	[SerializeField]
@@ -54,9 +69,18 @@ public class CharacterMovement : MonoBehaviour
 	private Vector3 m_BaseLocation;
 	private Quaternion m_BaseRotation;
 
+	private Vector3 m_StaminaBarScale;
+
 
 	void Start()
     {
+		m_Stamina = m_MaxStamina;
+		if (m_StaminaBar != null)
+		{
+			m_StaminaBarScale = m_StaminaBar.transform.localScale;
+			m_StaminaBar.SetActive(false);
+		}
+
 		m_Body = GetComponent<Rigidbody>();
 		m_BaseLocation = m_PositionAnimationTarget.localPosition;
 		m_BaseRotation = m_RotationAnimationTarget.rotation;
@@ -65,10 +89,34 @@ public class CharacterMovement : MonoBehaviour
 	
     void Update()
     {
+		if (m_ShouldRun)
+		{
+			m_Stamina -= Time.deltaTime;
+			if (m_Stamina < 0.0f)
+				m_ShouldRun = false;
+		}
+		else
+		{
+			m_Stamina = Mathf.Min(m_Stamina + Time.deltaTime, m_MaxStamina);
+		}
+
+		// Animate stamina bar
+		if (m_StaminaBar != null)
+		{
+			if (NormalizedStamina != 1.0f)
+			{
+				m_StaminaBar.SetActive(true);
+				m_StaminaBar.transform.localScale = new Vector3(NormalizedStamina * m_StaminaBarScale.x, m_StaminaBarScale.y, m_StaminaBarScale.z);
+			}
+			else
+				m_StaminaBar.SetActive(false);
+		}
+
 		Vector3 originalVelocity = m_Velocity;
 
 		Vector2 frameInput = m_CurrentInput * m_MoveSpeed * m_MoveSpeedFactor;
-		m_Velocity = Vector2.ClampMagnitude(m_Velocity + frameInput, m_MaxSpeed * m_MaxSpeedFactor * Mathf.Clamp01(m_CurrentUrgency));
+		float maxSpeed = m_ShouldRun ? m_RunMaxSpeed : m_MaxSpeed;
+		m_Velocity = Vector2.ClampMagnitude(m_Velocity + frameInput, maxSpeed * m_MaxSpeedFactor * Mathf.Clamp01(m_CurrentUrgency));
 
 		Vector2 frameVelocity = m_Velocity * Time.deltaTime;
 		m_Body.velocity = new Vector3(frameVelocity.x, m_Body.velocity.y, frameVelocity.y);
@@ -79,8 +127,6 @@ public class CharacterMovement : MonoBehaviour
 
 		if (m_ShouldAnimate)
 			UpdateAnimation();
-
-		
 	}
 
 	private void UpdateAnimation()
@@ -116,6 +162,12 @@ public class CharacterMovement : MonoBehaviour
 		m_PositionAnimationTarget.localPosition = m_BaseLocation + new Vector3(0, Mathf.Abs(wobbleValue) * m_WoobleJump, 0);
 	}
 
+	public void SetShouldRun(bool running)
+	{
+		if(!running || m_Stamina > m_RunStaminaThreshold)
+			m_ShouldRun = running;
+	}
+
 	public void ApplySettings(AIProfile profile)
 	{
 		m_MaxSpeedFactor = profile.m_MaxSpeedFactor;
@@ -131,5 +183,10 @@ public class CharacterMovement : MonoBehaviour
 	public bool IsFacingRight
 	{
 		get { return m_IsFacingRight; }
+	}
+
+	public float NormalizedStamina
+	{
+		get { return Mathf.Clamp01(m_Stamina / m_MaxStamina); }
 	}
 }

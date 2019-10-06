@@ -8,7 +8,10 @@ public class VoxelModel : MonoBehaviour
 {
 	public VoxelObject m_VoxelData;
 	private VoxelObject m_PreviousVoxelData;
-	
+
+	[SerializeField]
+	private int m_DebrisStep = 1;
+
 	void Awake()
     {
 		UpdateData();
@@ -66,6 +69,6 @@ public class VoxelModel : MonoBehaviour
 	public void CreateDebris(Vector3 sprayDirection)
 	{
 		if(m_VoxelData != null)
-			VoxelDebrisController.Main.SpawnDebris(m_VoxelData, transform, sprayDirection);
+			VoxelDebrisController.Main.SpawnDebris(m_VoxelData, transform, sprayDirection, m_DebrisStep);
 	}
 }
