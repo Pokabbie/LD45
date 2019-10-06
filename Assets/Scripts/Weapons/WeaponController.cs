@@ -117,4 +117,9 @@ public class WeaponController : MonoBehaviour
 
 		return false;
 	}
+
+	public bool HasOwner
+	{
+		get { return m_Owner != null; }
+	}
 }

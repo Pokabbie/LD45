@@ -5,20 +5,12 @@ using UnityEngine;
 public class FloorInstance : MonoBehaviour
 {
 	private FloorSettings m_FloorSettings;
-
-	[SerializeField]
 	private RoomInstance m_RoomPrefab;
 
-	public bool SPAWNER = false;
-	public FloorSettings TESTSETTINGS;
-
-	// Start is called before the first frame update
-	void Start()
+	public void Cleanup()
 	{
-		if(SPAWNER)
-			PlaceFloor(m_RoomPrefab, TESTSETTINGS);
+		Destroy(gameObject);
 	}
-	
 
 	public static FloorInstance PlaceFloor(RoomInstance roomPrefab, FloorSettings floorSettings)
 	{

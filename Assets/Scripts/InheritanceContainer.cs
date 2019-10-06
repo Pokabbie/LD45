@@ -10,7 +10,7 @@ public class InheritanceContainer : MonoBehaviour
 		{
 			Transform child = transform.GetChild(0);
 			child.gameObject.tag = gameObject.tag;
-			child.parent = null;// transform.parent;
+			child.parent = transform.parent;
 		}
 
 		Destroy(gameObject);

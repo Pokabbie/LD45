@@ -24,11 +24,26 @@ public class RoomInstance : MonoBehaviour
 	private FloorSettings m_FloorSettings;
 	private RoomSettings m_RoomSettings;
 
-	private void Start()
+	private float m_WaitTime = 0;
+
+	void Start()
 	{
-		m_EnemyContentContainer.SetActive(true);
-		m_FloorContentContainer.SetActive(true);
-		m_WallContentContainer.SetActive(true);
+		m_WaitTime = 0.2f;
+	}
+
+	void Update()
+	{
+		if (m_WaitTime > 0.0f)
+		{
+			m_WaitTime -= Time.deltaTime;
+
+			if (m_WaitTime <= 0.0f)
+			{
+				m_EnemyContentContainer.SetActive(true);
+				m_FloorContentContainer.SetActive(true);
+				m_WallContentContainer.SetActive(true);
+			}
+		}
 	}
 
 	private void SetupRoom(RoomGeneratorHelper generator, Vector3Int extents)
@@ -61,19 +76,19 @@ public class RoomInstance : MonoBehaviour
 		m_WallContentContainer.transform.parent = transform;
 		m_WallContentContainer.SetActive(false);
 
-		ProcessPlacementSettings(m_EnemyContentContainer, generator, GetEnemyPlacementSettings(), true);
-		ProcessPlacementSettings(m_FloorContentContainer, generator, GetLootPlacementSettings(), true);
-		ProcessPlacementSettings(m_FloorContentContainer, generator, GetFloorDressingSettings(), true);
-		ProcessPlacementSettings(m_WallContentContainer, generator, GetWallDressingSettings(), false);
+		ProcessPlacementSettings(m_EnemyContentContainer, generator, GetEnemyPlacementSettings(), new Vector3(0, 1, 0), false, true);
+		ProcessPlacementSettings(m_FloorContentContainer, generator, GetLootPlacementSettings(), new Vector3(0, 1, 0), true, true);
+		ProcessPlacementSettings(m_FloorContentContainer, generator, GetFloorDressingSettings(), new Vector3(0, 0, 0), true, true);
+		ProcessPlacementSettings(m_WallContentContainer, generator, GetWallDressingSettings(), new Vector3(0, 0, 0), true, false);
 
 		// Only make barrier on one side
 		if (HasTopDoor)
-			Instantiate(m_GatePrefab, m_TopDoorLocation, Quaternion.identity);
+			Instantiate(m_GatePrefab, m_TopDoorLocation, Quaternion.identity, transform);
 		if (HasLeftDoor)
-			Instantiate(m_GatePrefab, m_LeftDoorLocation, Quaternion.AngleAxis(90.0f, Vector3.up));
+			Instantiate(m_GatePrefab, m_LeftDoorLocation, Quaternion.AngleAxis(90.0f, Vector3.up), transform);
 	}
 
-	private void ProcessPlacementSettings(GameObject targetContainer, RoomGeneratorHelper generator, PlacementSettings settings, bool useAccessibleSlots)
+	private void ProcessPlacementSettings(GameObject targetContainer, RoomGeneratorHelper generator, PlacementSettings settings, Vector3 placeOffset, bool randomRotations, bool useAccessibleSlots)
 	{
 		int placeCount = Random.Range(settings.m_MinPlacements, settings.m_MaxPlacements);
 
@@ -97,8 +112,8 @@ public class RoomInstance : MonoBehaviour
 				else
 					targetObj = groupSettings.SelectRandomObject().m_PlacedObject;
 
-				Vector3 offset = new Vector3(Random.Range(-1.0f, 1.0f), -1.0f, Random.Range(-1.0f, 1.0f));
-				float angle = Random.Range(0, 360f);
+				Vector3 offset = new Vector3(Random.Range(-1.0f, 1.0f), -1.0f, Random.Range(-1.0f, 1.0f)) + placeOffset;
+				float angle = randomRotations ? Random.Range(0, 360f) : 0.0f;
 				GameObject newObj = Instantiate(targetObj, transform.position + offset + spots.ElementAt(i) - new Vector3(m_Extents.x, 0, m_Extents.z) * 0.5f, Quaternion.AngleAxis(angle, Vector3.up), targetContainer.transform);
 			}
 		}

@@ -12,6 +12,16 @@ public class GameController : MonoBehaviour
 
 	[SerializeField]
 	private GameObject m_PlayerPrefab;
+	private GameObject m_CurrentPlayer;
+
+	[SerializeField]
+	private RoomInstance m_RoomPrefab;
+
+	[SerializeField]
+	private FloorSettings[] m_Floors;
+
+	private int m_FloorIndex;
+	private FloorInstance m_CurrentFloor;
 
 	void Start()
 	{
@@ -20,7 +30,18 @@ public class GameController : MonoBehaviour
 		else
 			Debug.LogWarning("Multiple GameController found");
 
-		SpawnPlayer();
+		m_FloorIndex = -1;
+		NextLevel();
+	}
+
+	public bool DEBUGNEXLVL;
+	void Update()
+	{
+		if (DEBUGNEXLVL)
+		{
+			DEBUGNEXLVL = false;
+			NextLevel();
+		}
 	}
 
 	private Vector3 GetPlayerSpawnPoint()
@@ -30,8 +51,36 @@ public class GameController : MonoBehaviour
 
 	public void SpawnPlayer()
 	{
-		GameObject player = Instantiate(m_PlayerPrefab, GetPlayerSpawnPoint(), Quaternion.identity);
-		player.tag = "Player";
-		Camera.main.transform.position = player.transform.position;
+		if (m_CurrentPlayer == null)
+			m_CurrentPlayer = GameObject.FindGameObjectWithTag("Player");
+
+		if (m_CurrentPlayer == null)
+		{
+			m_CurrentPlayer = Instantiate(m_PlayerPrefab, GetPlayerSpawnPoint(), Quaternion.identity);
+			m_CurrentPlayer.tag = "Player";
+		}
+		else
+			m_CurrentPlayer.transform.position = GetPlayerSpawnPoint();
+
+		Camera.main.transform.position = m_CurrentPlayer.transform.position;
+	}
+
+	public void NextLevel()
+	{
+		m_FloorIndex++;
+		Debug.Log("Level " + m_FloorIndex);
+
+		if (m_CurrentFloor != null)
+			m_CurrentFloor.Cleanup();
+
+		FloorSettings floorSettings = m_Floors[Mathf.Min(m_FloorIndex, m_Floors.Length - 1)];
+		m_CurrentFloor = FloorInstance.PlaceFloor(m_RoomPrefab, floorSettings);
+
+		SpawnPlayer();
+	}
+
+	private void CreateFloor(FloorSettings floor)
+	{
+		m_CurrentFloor = FloorInstance.PlaceFloor(m_RoomPrefab, floor);
 	}
 }

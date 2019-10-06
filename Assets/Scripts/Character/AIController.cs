@@ -64,6 +64,24 @@ public class AIController : MonoBehaviour
 			PumpBrain();
 		}
 
+#if UNITY_EDITOR
+		switch (m_CurrentState)
+		{
+			case AIState.Idle:
+				Debug.DrawLine(transform.position, transform.position + Vector3.up * 3.0f, Color.white);
+				break;
+			case AIState.FindingWeapon:
+				Debug.DrawLine(transform.position, transform.position + Vector3.up * 3.0f, Color.yellow);
+				break;
+			case AIState.AttackingPlayer:
+				Debug.DrawLine(transform.position, transform.position + Vector3.up * 3.0f, Color.green);
+				break;
+			case AIState.Fleeing:
+				Debug.DrawLine(transform.position, transform.position + Vector3.up * 3.0f, Color.red);
+				break;
+		}
+#endif
+
 		switch (m_CurrentState)
 		{
 			case AIState.Idle:
@@ -143,6 +161,13 @@ public class AIController : MonoBehaviour
 			Vector2 inputDir = new Vector2(diff.x, diff.z).normalized;
 			m_CharController.Movement.Move(inputDir, m_MoveUrgency);
 		}
+
+#if UNITY_EDITOR
+		if (m_MoveToTarget)
+		{
+			Debug.DrawLine(transform.position, m_TargetMovePosition, Color.blue);
+		}
+#endif
 	}
 
 	private void UpdateAiming()
@@ -177,15 +202,19 @@ public class AIController : MonoBehaviour
 		if (m_DiscoveredPlayer != null && !m_DiscoveredPlayer.activeInHierarchy)
 			m_DiscoveredPlayer = null;
 
-		m_DiscoveredWeapons = GameObject.FindGameObjectsWithTag("Weapon").Where((w) => 
+		m_DiscoveredWeapons = GameObject.FindGameObjectsWithTag("Weapon").Where((w) =>
 		{
-			if (w.activeInHierarchy && w.transform.parent == null)
+			if (w != null && w.activeInHierarchy)
 			{
 				float distSq = GetTrackingDistanceSq(w);
-				return (distSq <= weaponSearchDistSq);
+				if (distSq <= weaponSearchDistSq)
+				{
+					WeaponController weapon = w.GetComponent<WeaponController>();
+					return (weapon != null && !weapon.HasOwner);
+				}
 			}
 			return false;
-		});
+		}).OrderBy((w) => GetTrackingDistanceSq(w));
 
 		// Decide state
 		AIState previousState = m_CurrentState;
@@ -196,7 +225,10 @@ public class AIController : MonoBehaviour
 		if (m_CharController.WeaponCount < m_Profile.m_MinumumWeaponCount)
 		{
 			if (m_DiscoveredWeapons.Any())
+			{
 				m_CurrentState = AIState.FindingWeapon;
+				m_TargetMoveTransform = null;
+			}
 			else
 			{
 				m_CurrentState = AIState.Fleeing;
@@ -222,6 +254,7 @@ public class AIController : MonoBehaviour
 		if (m_CurrentState == AIState.Idle && m_CharController.WeaponCount < m_Profile.m_DesiredWeaponCount && m_DiscoveredWeapons.Any())
 		{
 			m_CurrentState = AIState.FindingWeapon;
+			m_TargetMoveTransform = null;
 		}
 
 		// Reset tracking when state changes
@@ -263,8 +296,7 @@ public class AIController : MonoBehaviour
 		// Hunt for new weapon
 		if (!HasValidMoveTransform() && m_DiscoveredWeapons.Count() != 0)
 		{
-			int index = Random.Range(0, m_DiscoveredWeapons.Count() - 1);
-			GameObject targetWeapon = m_DiscoveredWeapons.ElementAt(index);
+			GameObject targetWeapon = m_DiscoveredWeapons.First();
 
 			if (targetWeapon != null && targetWeapon.activeInHierarchy)
 			{

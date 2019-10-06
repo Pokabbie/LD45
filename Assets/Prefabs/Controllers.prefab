@@ -169,3 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlayerPrefab: {fileID: 54912641309850829, guid: 3140dd5c776775e40af8f11c6cba8274,
     type: 3}
+  m_RoomPrefab: {fileID: -1430975787213152508, guid: 1dfdec31d12a14444ad351118867c7a4,
+    type: 3}
+  m_Floors:
+  - {fileID: 11400000, guid: 3aa27ea4de26709458b7d25f4f6aa89b, type: 2}
